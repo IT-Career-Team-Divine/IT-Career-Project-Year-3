@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using The_Gram.Data.Enums;
 using static The_Gram.Data.Constants.Constants.ContentConstants;
 namespace The_Gram.Data.Models
 {
-    public class Content
+    public  class Content
     {
         public Content()
         {
@@ -15,6 +16,7 @@ namespace The_Gram.Data.Models
         public int Id { get; init; }
         public User User { get; set; }
         public int TotalLikes { get; set; }
+        public ContentType Type { get; set; }
         [Required]
         [MaxLength(MaxContentTextLength)]
         public string Text { get; set; }

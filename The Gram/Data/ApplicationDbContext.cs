@@ -19,11 +19,13 @@ namespace The_Gram.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-           builder.Entity<Content>().HasOne(c => c.User).WithMany(u => u.Contents).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<Reaction>().HasOne(r => r.Content).WithMany(c => c.Reactions).HasForeignKey(r => r.ContentId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<Reaction>().HasOne(r => r.User).WithMany(u => u.Reactions).HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<Message>().HasOne(m => m.Reciever).WithMany(u => u.Messages).HasForeignKey(m => m.RecieverId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<Image>().HasOne(i => i.Content).WithMany(c => c.Images).HasForeignKey(i => i.ContentId).OnDelete(DeleteBehavior.Restrict);
+           builder.Entity<Post>().HasOne(p => p.User).WithMany(u => u.Posts).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Reaction>().HasOne(r => r.Content).WithMany(c => c.Reactions).HasForeignKey(r => r.ContentId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Reaction>().HasOne(r => r.User).WithMany(u => u.Reactions).HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Message>().HasOne(m => m.Reciever).WithMany(u => u.RecievedMessages).HasForeignKey(m => m.RecieverId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Message>().HasOne(m => m.User).WithMany(u => u.SentMessages).HasForeignKey(m => m.UserId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Comment>().HasOne(c => c.User).WithMany(u => u.Comments).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Image>().HasOne(i => i.Content).WithMany(c => c.Images).HasForeignKey(i => i.ContentId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

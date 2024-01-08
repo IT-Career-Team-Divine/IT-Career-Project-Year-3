@@ -8,7 +8,7 @@ using The_Gram.Data;
 
 #nullable disable
 
-namespace TheGram.Data.Migrations
+namespace TheGram.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -252,15 +252,9 @@ namespace TheGram.Data.Migrations
                     b.Property<int>("TotalLikes")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Contents");
+                    b.ToTable("Content");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Content");
 
@@ -346,7 +340,13 @@ namespace TheGram.Data.Migrations
                     b.Property<int?>("ContentId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasIndex("ContentId");
+
+                    b.HasIndex("UserId1");
 
                     b.HasDiscriminator().HasValue("Comment");
                 });
@@ -359,7 +359,19 @@ namespace TheGram.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("UserId1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasIndex("RecieverId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable(t =>
+                        {
+                            t.Property("UserId1")
+                                .HasColumnName("Message_UserId1");
+                        });
 
                     b.HasDiscriminator().HasValue("Message");
                 });
@@ -367,6 +379,12 @@ namespace TheGram.Data.Migrations
             modelBuilder.Entity("The_Gram.Data.Models.Post", b =>
                 {
                     b.HasBaseType("The_Gram.Data.Models.Content");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("UserId");
 
                     b.HasDiscriminator().HasValue("Post");
                 });
@@ -422,23 +440,12 @@ namespace TheGram.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("The_Gram.Data.Models.Content", b =>
-                {
-                    b.HasOne("The_Gram.Data.Models.User", "User")
-                        .WithMany("Contents")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("The_Gram.Data.Models.Image", b =>
                 {
                     b.HasOne("The_Gram.Data.Models.Content", "Content")
                         .WithMany("Images")
                         .HasForeignKey("ContentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Content");
@@ -449,13 +456,13 @@ namespace TheGram.Data.Migrations
                     b.HasOne("The_Gram.Data.Models.Content", "Content")
                         .WithMany("Reactions")
                         .HasForeignKey("ContentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("The_Gram.Data.Models.User", "User")
                         .WithMany("Reactions")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Content");
@@ -483,6 +490,14 @@ namespace TheGram.Data.Migrations
                     b.HasOne("The_Gram.Data.Models.Content", null)
                         .WithMany("Comments")
                         .HasForeignKey("ContentId");
+
+                    b.HasOne("The_Gram.Data.Models.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("The_Gram.Data.Models.Message", b =>
@@ -490,10 +505,29 @@ namespace TheGram.Data.Migrations
                     b.HasOne("The_Gram.Data.Models.User", "Reciever")
                         .WithMany("Messages")
                         .HasForeignKey("RecieverId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("The_Gram.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Reciever");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.Post", b =>
+                {
+                    b.HasOne("The_Gram.Data.Models.User", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("The_Gram.Data.Models.Content", b =>
@@ -507,9 +541,11 @@ namespace TheGram.Data.Migrations
 
             modelBuilder.Entity("The_Gram.Data.Models.User", b =>
                 {
-                    b.Navigation("Contents");
+                    b.Navigation("Comments");
 
                     b.Navigation("Messages");
+
+                    b.Navigation("Posts");
 
                     b.Navigation("Reactions");
                 });
