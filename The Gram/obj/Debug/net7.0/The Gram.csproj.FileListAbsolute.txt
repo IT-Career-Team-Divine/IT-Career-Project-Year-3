@@ -1,0 +1,92 @@
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\appsettings.Development.json
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\appsettings.json
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\The Gram.staticwebassets.runtime.json
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\The Gram.exe
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\The Gram.deps.json
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\The Gram.runtimeconfig.json
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\The Gram.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\The Gram.pdb
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Azure.Core.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Azure.Identity.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Humanizer.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.UI.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Data.SqlClient.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Extensions.FileProviders.Embedded.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Identity.Client.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Identity.Client.Extensions.Msal.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.SqlServer.Server.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Mono.TextTemplating.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\System.CodeDom.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\System.Drawing.Common.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\System.Memory.Data.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\System.Runtime.Caching.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\System.Security.Permissions.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\System.Windows.Extensions.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.csproj.AssemblyReference.cache
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.GeneratedMSBuildEditorConfig.editorconfig
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.AssemblyInfoInputs.cache
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.AssemblyInfo.cs
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.csproj.CoreCompileInputs.cache
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.MvcApplicationPartsAssemblyInfo.cs
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.MvcApplicationPartsAssemblyInfo.cache
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.RazorAssemblyInfo.cache
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.RazorAssemblyInfo.cs
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\staticwebassets\msbuild.The Gram.Microsoft.AspNetCore.StaticWebAssets.props
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\staticwebassets\msbuild.build.The Gram.props
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.The Gram.props
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.The Gram.props
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\staticwebassets.pack.json
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\staticwebassets.build.json
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\staticwebassets.development.json
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\scopedcss\bundle\The Gram.styles.css
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\scopedcss\projectbundle\The Gram.bundle.scp.css
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.csproj.CopyComplete
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.dll
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\refint\The Gram.dll
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.pdb
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\The Gram.genruntimeconfig.cache
+D:\IT-Career-Year-3\The Gram\obj\Debug\net7.0\ref\The Gram.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.AspNet.Identity.Core.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.AspNet.Identity.Owin.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Owin.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Owin.Security.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Owin.Security.Cookies.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Microsoft.Owin.Security.OAuth.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Newtonsoft.Json.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\Owin.dll
