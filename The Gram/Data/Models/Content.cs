@@ -4,7 +4,7 @@ using The_Gram.Data.Enums;
 using static The_Gram.Data.Constants.Constants.ContentConstants;
 namespace The_Gram.Data.Models
 {
-    public  class Content
+    public abstract class Content
     {
         public Content()
         {
@@ -23,7 +23,8 @@ namespace The_Gram.Data.Models
         public IEnumerable<Reaction> Reactions { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
         public IEnumerable<Image> Images { get; set; }
-        [Required]
-        public string UserId { get; }
+     
+     [Required]
+      public string UserId { get; }
     }
 }

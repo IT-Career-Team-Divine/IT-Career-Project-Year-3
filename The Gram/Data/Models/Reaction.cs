@@ -7,11 +7,11 @@ namespace The_Gram.Data.Models
     {
         [Key]
         public int Id { get; init; }
-        [ForeignKey(nameof(UserId))]
         public User User { get; set; }
         [Required]
-        public string UserId { get;}
+       public string UserId { get;}
         public Content Content { get; set; }
+        [Required]
         public int ContentId { get; }
     }
 }

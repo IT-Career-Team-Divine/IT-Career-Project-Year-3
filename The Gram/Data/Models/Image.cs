@@ -10,6 +10,7 @@ namespace The_Gram.Data.Models
         [Required]
         public string URL { get; set; }
         public Content Content { get; set; }
+        [Required]
         public int ContentId { get; set; }
     }
 }
