@@ -9,5 +9,6 @@ namespace The_Gram.Data.Models
         [Required]
         public string RecieverId { get;}
 
+
     }
 }

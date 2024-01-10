@@ -12,7 +12,7 @@ using The_Gram.Data;
 namespace TheGram.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240110102838_testMigration")]
+    [Migration("20240110113422_testMigration")]
     partial class testMigration
     {
         /// <inheritdoc />
@@ -337,14 +337,14 @@ namespace TheGram.Migrations
                 {
                     b.HasBaseType("The_Gram.Data.Models.Content");
 
-                    b.Property<int?>("ContentId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("ContentId");
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserId");
 
@@ -482,13 +482,15 @@ namespace TheGram.Migrations
             modelBuilder.Entity("The_Gram.Data.Models.Comment", b =>
                 {
                     b.HasOne("The_Gram.Data.Models.Content", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("ContentId");
-
-                    b.HasOne("The_Gram.Data.Models.Content", null)
                         .WithOne()
                         .HasForeignKey("The_Gram.Data.Models.Comment", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("The_Gram.Data.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("The_Gram.Data.Models.User", "User")
@@ -496,6 +498,8 @@ namespace TheGram.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });
@@ -544,8 +548,6 @@ namespace TheGram.Migrations
 
             modelBuilder.Entity("The_Gram.Data.Models.Content", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Images");
 
                     b.Navigation("Reactions");
@@ -562,6 +564,11 @@ namespace TheGram.Migrations
                     b.Navigation("RecievedMessages");
 
                     b.Navigation("SentMessages");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

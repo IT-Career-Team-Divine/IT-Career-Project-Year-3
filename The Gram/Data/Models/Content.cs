@@ -9,7 +9,6 @@ namespace The_Gram.Data.Models
         public Content()
         {
             this.Reactions = new HashSet<Reaction>();
-            this.Comments = new HashSet<Comment>();
             this.Images = new HashSet<Image>();
         }
         [Key]
@@ -21,7 +20,6 @@ namespace The_Gram.Data.Models
         [MaxLength(MaxContentTextLength)]
         public string Text { get; set; }
         public IEnumerable<Reaction> Reactions { get; set; }
-        public IEnumerable<Comment> Comments { get; set; }
         public IEnumerable<Image> Images { get; set; }
      
      [Required]
