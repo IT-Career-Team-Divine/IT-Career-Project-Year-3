@@ -4,10 +4,8 @@
     {
         public class UserConstants
         {
-            public const int MaxFirstNameLength = 100;
-            public const int MinFirstLength = 2;
-            public const int MaxLastNameLength = 100;
-            public const int MinLastNameLength = 2;
+            public const int MaxNameLength = 100;
+            public const int MinNameLength = 2;
             public const int MaxUsernameLength = 256;
             public const int MinUsernameLength = 4;
             public const int MaxPasswordLength = 100;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-
+using System.ComponentModel.DataAnnotations;
+using static The_Gram.Data.Constants.Constants.UserConstants;
 namespace The_Gram.Data.Models
 {
     public class User : IdentityUser
@@ -14,6 +15,9 @@ namespace The_Gram.Data.Models
             this.Reactions= new HashSet<Reaction>();
             this.RecievedMessages = new HashSet<Message>();
         }
+        [Required]
+        [MaxLength(MaxNameLength)]
+        public string FullName{ get; set; }
         public string Bio { get; set; }
         public IEnumerable<Post> Posts { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
