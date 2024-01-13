@@ -60,6 +60,7 @@ namespace The_Gram.Services
             var createUser = await userManager.CreateAsync(user, password);
             var assignUserRole = await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "user"));
             var assignUserRoleResult = assignUserRole;
+
             if (createUser.Succeeded && assignUserRoleResult.Succeeded)
             {
                 output = true;

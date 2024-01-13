@@ -101,8 +101,6 @@ D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\The Gram.pdb
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Azure.Core.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Azure.Identity.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Humanizer.dll
-D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.AspNet.Identity.Core.dll
-D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.AspNet.Identity.Owin.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
@@ -127,15 +125,10 @@ D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.IdentityModel.L
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
-D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.Owin.dll
-D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.Owin.Security.dll
-D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.Owin.Security.Cookies.dll
-D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.Owin.Security.OAuth.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.SqlServer.Server.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Mono.TextTemplating.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Newtonsoft.Json.dll
-D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\Owin.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\System.CodeDom.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
 D:\IT-Career-Year-3\The_Gram\The Gram\bin\Debug\net7.0\System.Drawing.Common.dll

@@ -10,7 +10,7 @@ namespace The_Gram.Data
             : base(options)
         {
         }
-     public DbSet<Content> Contents { get; set; }
+
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Message> Messages { get; set; }

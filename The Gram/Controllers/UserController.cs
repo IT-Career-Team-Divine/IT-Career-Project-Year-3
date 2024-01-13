@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Owin.Security.Provider;
 using The_Gram.Data.Models;
 using The_Gram.Models.User;
 using The_Gram.Services;
