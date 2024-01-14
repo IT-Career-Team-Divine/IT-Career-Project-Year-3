@@ -1,25 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\IT-Career-Year-3\\The_Gram\\The Gram\\The Gram.csproj": {}
+    "C:\\Users\\Stefan-Gaming\\Source\\Repos\\IT-Career-Project-Year-3\\The Gram\\The Gram.csproj": {}
   },
   "projects": {
-    "D:\\IT-Career-Year-3\\The_Gram\\The Gram\\The Gram.csproj": {
+    "C:\\Users\\Stefan-Gaming\\Source\\Repos\\IT-Career-Project-Year-3\\The Gram\\The Gram.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\IT-Career-Year-3\\The_Gram\\The Gram\\The Gram.csproj",
+        "projectUniqueName": "C:\\Users\\Stefan-Gaming\\Source\\Repos\\IT-Career-Project-Year-3\\The Gram\\The Gram.csproj",
         "projectName": "The Gram",
-        "projectPath": "D:\\IT-Career-Year-3\\The_Gram\\The Gram\\The Gram.csproj",
-        "packagesPath": "C:\\Users\\TOP\\.nuget\\packages\\",
-        "outputPath": "D:\\IT-Career-Year-3\\The_Gram\\The Gram\\obj\\",
+        "projectPath": "C:\\Users\\Stefan-Gaming\\Source\\Repos\\IT-Career-Project-Year-3\\The Gram\\The Gram.csproj",
+        "packagesPath": "C:\\Users\\Stefan-Gaming\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Stefan-Gaming\\Source\\Repos\\IT-Career-Project-Year-3\\The Gram\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\TOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Stefan-Gaming\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -27,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -94,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
