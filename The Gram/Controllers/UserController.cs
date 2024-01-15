@@ -59,7 +59,7 @@ namespace The_Gram.Controllers
             var madeUser = await userService.MakeUserAsync(user, model.Password);
             if (madeUser == true)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "User");
             }
             return View(model);
         }
