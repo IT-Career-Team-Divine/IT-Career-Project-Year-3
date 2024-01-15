@@ -784,3 +784,8 @@ D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\unix\lib\net6.0\System.Dr
 D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\MailKit.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\MimeKit.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
+D:\IT-Career-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll

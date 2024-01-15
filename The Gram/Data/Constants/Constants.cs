@@ -2,6 +2,7 @@
 {
     public class Constants
     {
+        public string AppPassword = "roii vfmu aivu jnpw\\r\\n";
         public class UserConstants
         {
             public const int MaxNameLength = 100;

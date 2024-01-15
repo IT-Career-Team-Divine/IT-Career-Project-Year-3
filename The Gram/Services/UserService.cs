@@ -10,11 +10,13 @@ namespace The_Gram.Services
 
         private readonly ApplicationDbContext context;
         private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
 
-        public UserService(ApplicationDbContext context, UserManager<User> userManager)
+        public UserService(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             this.context = context;
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public Task<User> GetByIdAsync(string id)
@@ -74,9 +76,39 @@ namespace The_Gram.Services
             return user;
         }
 
-        public Task<bool> MakeAdminAsync(User user)
+        public async Task<bool> MakeAdminAsync(User user)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> SignInUserAsync(User user, string password)
+        {
+            var result = await signInManager.PasswordSignInAsync(user, password, false, false);
+            bool output = false;
+
+            if (result.Succeeded)
+            {
+                output = true;
+            }
+            return output;
+        }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            User user = await userManager.FindByEmailAsync(email);
+            return user;
+        }
+
+        public async Task<string> CreateEmailConfirmationTokenAsync(User user)
+        {
+           string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            return token;
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        {
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            return result;
         }
     }
 }
