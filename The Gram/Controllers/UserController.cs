@@ -60,7 +60,7 @@ namespace The_Gram.Controllers
             if (madeUser == true)
             {
                 var token = await userService.CreateEmailConfirmationTokenAsync(user);
-                var callbackUrl = Url.Action("ConfirmEmail", "User", new { userId = user.Id, token = token }, protocol: HttpContext.Request.Scheme);
+                var callbackUrl = Url.Action("ConfirmEmail", "User", new {user.Id,token },Request.Scheme);
                 await emailSender.SendEmailAsync(user.Email, "Confirm your account",
                $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                 return View(nameof(SuccessRegistration));
@@ -122,7 +122,14 @@ namespace The_Gram.Controllers
             if (user == null)
                 return View("Error");
             var result = await userService.ConfirmEmailAsync(user, token);
-            return View(result.Succeeded ? nameof(ConfirmEmail) : "Error");
+            if (result.Succeeded)
+            {
+                return View("ConfirmEmail");
+            }
+            else
+            {
+                return View("Error");
+            }
         }
         [HttpGet]
         public IActionResult SuccessRegistration()
