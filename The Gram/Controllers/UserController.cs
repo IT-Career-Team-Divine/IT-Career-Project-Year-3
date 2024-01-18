@@ -85,13 +85,16 @@ namespace The_Gram.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(string returnUrl)
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 return RedirectToAction("Index", "Home");
             }
-
+            if (Url.IsLocalUrl(returnUrl) && !string.IsNullOrEmpty(returnUrl))
+            {
+                ViewBag.ReturnURL = returnUrl;
+            }
             var model = new LoginViewModel();
 
             return View(model);
@@ -99,27 +102,27 @@ namespace The_Gram.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
+            string decodedUrl = "";
             var user = await userService.GetByUsernameAsync(model.Username);
 
 
             if (user != null)
             {
-                if (!user.EmailConfirmed)
-                {
-                    ModelState.AddModelError("", "Account not confirmed");
-                    return View(model);
-                }
                 var userSignedIn = await userService.SignInUserAsync(user, model.Password);
-
                 if (userSignedIn == true)
                 {
+                    if (Url.IsLocalUrl(returnUrl))
+                    {
+                        ViewBag.ReturnUrl = returnUrl;
+                        return Redirect(returnUrl);
+                    }
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -144,7 +147,7 @@ namespace The_Gram.Controllers
             return RedirectToAction("Index", "Home");
         }
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
             var user = await userService.GetByEmailAsync(email);

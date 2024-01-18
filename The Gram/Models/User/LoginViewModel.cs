@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace The_Gram.Models.User
 {
-    public class LoginViewModel
+    public  class LoginViewModel
     {
         [System.ComponentModel.DataAnnotations.Required]
         public string Username { get; set; }
