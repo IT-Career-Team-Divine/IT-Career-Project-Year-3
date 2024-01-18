@@ -23,7 +23,8 @@ namespace The_Gram.Controllers
         {
             signInManager = _signInManager;
             userService = _userService;
-            emailSender = _emailSender;        }
+            emailSender = _emailSender;
+        }
 
         [HttpGet]
         [AllowAnonymous]
@@ -47,6 +48,20 @@ namespace The_Gram.Controllers
             {
                 return View(model);
             }
+            User userWithEmailExists = await userService.GetByEmailAsync(model.Email);
+            User UserWithUsernameExists = await userService.GetByUsernameAsync(model.UserName);
+            if (userWithEmailExists != null)
+            {
+                ModelState.AddModelError("", "Email is already registered");
+            }
+            if (UserWithUsernameExists != null)
+            {
+                ModelState.AddModelError("", "Username is taken, please choose another");
+            }
+            if (ModelState.ErrorCount != 0)
+            {
+                return View(model);
+            }
 
             var user = new User()
             {
@@ -60,12 +75,11 @@ namespace The_Gram.Controllers
             if (madeUser == true)
             {
                 var token = await userService.CreateEmailConfirmationTokenAsync(user);
-                var callbackUrl = Url.Action("ConfirmEmail", "User", new {user.Id,token },Request.Scheme);
+                var callbackUrl = Url.Action(nameof(ConfirmEmail), "User", new { user.Id, token, user.Email }, Request.Scheme);
                 await emailSender.SendEmailAsync(user.Email, "Confirm your account",
-               $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+               $"Please confirm your account by clicking this link: {callbackUrl}'");
                 return View(nameof(SuccessRegistration));
             }
-     //       ModelState.AddModelError("", "Invalid register");
             return View(model);
         }
 
@@ -94,17 +108,31 @@ namespace The_Gram.Controllers
 
             var user = await userService.GetByUsernameAsync(model.Username);
 
+
             if (user != null)
             {
+                if (!user.EmailConfirmed)
+                {
+                    ModelState.AddModelError("", "Account not confirmed");
+                    return View(model);
+                }
                 var userSignedIn = await userService.SignInUserAsync(user, model.Password);
 
                 if (userSignedIn == true)
                 {
                     return RedirectToAction("Index", "Home");
                 }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid login");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "No such user exists");
+
             }
 
-            ModelState.AddModelError("", "Invalid login");
 
             return View(model);
         }
@@ -116,6 +144,7 @@ namespace The_Gram.Controllers
             return RedirectToAction("Index", "Home");
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
             var user = await userService.GetByEmailAsync(email);
