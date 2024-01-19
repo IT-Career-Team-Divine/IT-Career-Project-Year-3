@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\IT-Career-Year-3\\The Gram\\The Gram.csproj": {}
+    "D:\\IT-Career-Project-Year-3-main\\The Gram\\The Gram.csproj": {}
   },
   "projects": {
-    "D:\\IT-Career-Year-3\\The Gram\\The Gram.csproj": {
+    "D:\\IT-Career-Project-Year-3-main\\The Gram\\The Gram.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\IT-Career-Year-3\\The Gram\\The Gram.csproj",
+        "projectUniqueName": "D:\\IT-Career-Project-Year-3-main\\The Gram\\The Gram.csproj",
         "projectName": "The Gram",
-        "projectPath": "D:\\IT-Career-Year-3\\The Gram\\The Gram.csproj",
+        "projectPath": "D:\\IT-Career-Project-Year-3-main\\The Gram\\The Gram.csproj",
         "packagesPath": "C:\\Users\\TOP\\.nuget\\packages\\",
-        "outputPath": "D:\\IT-Career-Year-3\\The Gram\\obj\\",
+        "outputPath": "D:\\IT-Career-Project-Year-3-main\\The Gram\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

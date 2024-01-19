@@ -70,11 +70,6 @@ namespace The_Gram.Services
             return output;
         }
 
-        public async Task<User> GetByUserNameAsync(string? name)
-        {
-            User user = await userManager.FindByNameAsync(name);
-            return user;
-        }
 
         public async Task<bool> MakeAdminAsync(User user)
         {
@@ -108,6 +103,32 @@ namespace The_Gram.Services
         public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
         {
             var result = await userManager.ConfirmEmailAsync(user, token);
+            return result;
+        }
+        public async Task<bool> DeleteUserAsync(string username, string password)
+        {
+            var user = await GetByUsernameAsync(username);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            var isValidPassword = await CheckPasswordAsync(user, password);
+
+            if (!isValidPassword)
+            {
+                return false;
+            }
+
+            var result = await userManager.DeleteAsync(user);
+
+            return result.Succeeded;
+        }
+
+        public async Task<bool> CheckPasswordAsync(User user, string password)
+        {
+            var result = await userManager.CheckPasswordAsync(user, password);
             return result;
         }
     }

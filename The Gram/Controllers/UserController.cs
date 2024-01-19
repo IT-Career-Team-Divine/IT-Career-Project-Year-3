@@ -108,7 +108,6 @@ namespace The_Gram.Controllers
             {
                 return View(model);
             }
-            string decodedUrl = "";
             var user = await userService.GetByUsernameAsync(model.Username);
 
 
@@ -167,6 +166,45 @@ namespace The_Gram.Controllers
         public IActionResult SuccessRegistration()
         {
             return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(DeletionViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userService.GetByUsernameAsync(model.Username);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Invalid username");
+                return View(model);
+            }
+
+            var passwordCorrect = await userService.CheckPasswordAsync(user, model.Password);
+
+            if (!passwordCorrect)
+            {
+                ModelState.AddModelError("", "Invalid password");
+                return View(model);
+            }
+
+            var deleted = await userService.DeleteUserAsync(model.Username, model.Password);
+
+            if (deleted)
+            {
+                await signInManager.SignOutAsync();
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Failed to delete user");
+                return View(model);
+            }
         }
     }
 }
