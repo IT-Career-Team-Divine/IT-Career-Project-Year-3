@@ -1056,3 +1056,8 @@ D:\IT-Career-Project-Year-3-main\The Gram\obj\Debug\net7.0\refint\The Gram.dll
 D:\IT-Career-Project-Year-3-main\The Gram\obj\Debug\net7.0\The Gram.pdb
 D:\IT-Career-Project-Year-3-main\The Gram\obj\Debug\net7.0\The Gram.genruntimeconfig.cache
 D:\IT-Career-Project-Year-3-main\The Gram\obj\Debug\net7.0\ref\The Gram.dll
+C:\Users\Stefan-Gaming\Source\Repos\IT-Career-Project-Year-3\The Gram\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
+C:\Users\Stefan-Gaming\Source\Repos\IT-Career-Project-Year-3\The Gram\bin\Debug\net7.0\MailKit.dll
+C:\Users\Stefan-Gaming\Source\Repos\IT-Career-Project-Year-3\The Gram\bin\Debug\net7.0\MimeKit.dll
+C:\Users\Stefan-Gaming\Source\Repos\IT-Career-Project-Year-3\The Gram\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\Stefan-Gaming\Source\Repos\IT-Career-Project-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll

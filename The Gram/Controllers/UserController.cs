@@ -169,7 +169,7 @@ namespace The_Gram.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(DeletionViewModel model)
         {
             if (!ModelState.IsValid)
