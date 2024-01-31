@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using The_Gram.Data.Models;
+@using The_Gram.Models.User;
+@using The_Gram.Services;
+@model UserAccountViewModel
+@inject IUserService userService
+@inject UserManager<User> UserManager
+
+@{
+    User user =  await UserManager.GetUserAsync(User);
+    string userId = user.Id;
+    ViewData["Title"] = $"{Model.Username}'s profile.";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <section>
+             <div class="text-center"><h2>@Model.FullName</h2></div>
+            <div class="col-md-6 offset-4">
+               <a><img src=@Model.PictureUr height="120" /></a>
+                
+            </div>
+            <div class="text-center"><h2>@Model.Bio</h2></div>
+                </div>
+    @if (userId == Model.Id)
+    {
+        <div class="text-center">
+                <form class="form-inline" asp-area="" asp-controller="User" asp-route-id ="@user.Id" asp-action="Edit">
+                <button type="submit" class="btn-warning">Edit</button>
+            </form>
+            </div>
+    }
+    @if (await UserManager.IsInRoleAsync(user,"Admin") || userId == Model.Id)
+    { 
+        <div class="text-center">
+                <form class="form-inline" asp-area="" asp-controller="User" asp-route-id ="@user.Id" asp-action="Delete">
+                <button type="submit" class="btn-danger">Delete</button>
+            </form>
+        </div>
+    }
+        </section>
+    </div>
+</div>

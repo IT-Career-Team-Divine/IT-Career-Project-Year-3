@@ -16,6 +16,7 @@ namespace The_Gram.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<BecomeAdminApplication> adminApplications { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -27,6 +28,7 @@ namespace The_Gram.Data
             builder.Entity<Comment>().ToTable("Comments").HasOne(c => c.User).WithMany(u => u.Comments).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Cascade);
          builder.Entity<Reaction>().ToTable("Reactions").HasOne(r => r.Content).WithMany(c => c.Reactions).HasForeignKey(r => r.ContentId).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Image>().ToTable("Images").HasOne(i => i.Content).WithMany(c => c.Images).HasForeignKey(i => i.ContentId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<BecomeAdminApplication>().ToTable("AdminApplications").HasOne(ada => ada.Applicant).WithOne(a=> a.AdminApplication).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

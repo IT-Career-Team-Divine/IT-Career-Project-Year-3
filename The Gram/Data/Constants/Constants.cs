@@ -5,6 +5,7 @@
         public string AppPassword = "roii vfmu aivu jnpw\\r\\n";
         public class UserConstants
         {
+            public const string defaultBio = "Put in bio";
             public const int MaxNameLength = 100;
             public const int MinNameLength = 2;
             public const int MaxUsernameLength = 256;

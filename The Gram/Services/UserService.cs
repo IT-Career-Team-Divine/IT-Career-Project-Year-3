@@ -31,49 +31,24 @@ namespace The_Gram.Services
             return user;
         }
 
-        public Task<bool> IsAdminAsync(User user)
-        {
-
-            return userManager.IsInRoleAsync(user, "Admin");
-        }
-
-        //public async Task<bool> MakeAdminAsync(User user)
-        //{
-        //    bool output = false;
-        //    int count = GetCount();
-        //    if (count == 1)
-        //    {
-        //        var operation = await userManager.AddToRoleAsync(user, "Admin");
-        //        var remove = await userManager.RemoveFromRoleAsync(user, "User");
-        //
-        //        if (operation.Succeeded && remove.Succeeded)
-        //        {
-        //            output = true;
-        //        }
-        //    }
-        //
-        //    return output;
-        //}
-
-
         public async Task<bool> MakeUserAsync(User user, string password)
         {
             bool output = false;
             var createUser = await userManager.CreateAsync(user, password);
-            var assignUserRole = await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "user"));
-            var assignUserRoleResult = assignUserRole;
-
-            if (createUser.Succeeded && assignUserRoleResult.Succeeded)
+            if (createUser.Succeeded)
             {
-                output = true;
+                var assignUserRole = await userManager.AddToRoleAsync(user, "User");
+                var assignUserRoleResult = assignUserRole;
+                if (createUser.Succeeded && assignUserRoleResult.Succeeded)
+                {
+                    output = true;
+                }
+            }
+            else
+            {
+                output = false;
             }
             return output;
-        }
-
-
-        public async Task<bool> MakeAdminAsync(User user)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<bool> SignInUserAsync(User user, string password)
@@ -130,6 +105,25 @@ namespace The_Gram.Services
         {
             var result = await userManager.CheckPasswordAsync(user, password);
             return result;
+        }
+
+        public async Task<bool> Edit(string id, string fullName, string pictureUr, string bio, string username)
+        {
+            var userData = await GetByIdAsync(id);
+
+            if (userData == null)
+            {
+                return false;
+            }
+
+            userData.FullName = fullName;
+            userData.Picture = pictureUr;
+            userData.Bio = bio;
+            userData.UserName = username;
+
+            this.context.SaveChanges();
+
+            return true;
         }
     }
 }

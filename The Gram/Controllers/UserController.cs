@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Security.Certificates;
 using The_Gram.Data.Models;
 using The_Gram.Models.User;
 using The_Gram.Services;
+using static The_Gram.Data.Constants.Constants.UserConstants;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace The_Gram.Controllers
@@ -15,15 +17,17 @@ namespace The_Gram.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly IUserService userService;
         private readonly IEmailSender emailSender;
+        private readonly UserManager<User> userManager;
 
         public UserController(
             SignInManager<User> _signInManager,
             IUserService _userService,
-            IEmailSender _emailSender)
+            IEmailSender _emailSender, UserManager<User> _userManager)
         {
             signInManager = _signInManager;
             userService = _userService;
             emailSender = _emailSender;
+            userManager = _userManager;
         }
 
         [HttpGet]
@@ -44,6 +48,7 @@ namespace The_Gram.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -62,12 +67,16 @@ namespace The_Gram.Controllers
             {
                 return View(model);
             }
-
+            if (model.Bio == null)
+            {
+                model.Bio = defaultBio;
+            }
             var user = new User()
             {
                 Email = model.Email,
                 FullName = model.FullName,
-                UserName = model.UserName
+                UserName = model.UserName,
+                Bio = model.Bio
             };
 
 
@@ -167,14 +176,26 @@ namespace The_Gram.Controllers
         {
             return View();
         }
-
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(DeletionViewModel model)
+        [Authorize]
+        public async Task<IActionResult> Delete(string id,DeletionViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
+            }
+            var userToDelete = await this.userService.GetByIdAsync(id);
+            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var userIsAdmin = await userManager.IsInRoleAsync(currentUser, "Admin");
+            if (id == null)
+            {
+                ModelState.AddModelError("", "There isn't such a user");
+                return RedirectToAction("Index", "Home");
+            }
+            if (userToDelete != currentUser && !userIsAdmin)
+            {
+                ModelState.AddModelError("", "This isn't your account and you are not an Administrator, you have no premission to delete it");
+                return RedirectToAction("Index", "Home");
             }
 
             var user = await userService.GetByUsernameAsync(model.Username);
@@ -184,6 +205,7 @@ namespace The_Gram.Controllers
                 ModelState.AddModelError("", "Invalid username");
                 return View(model);
             }
+           
 
             var passwordCorrect = await userService.CheckPasswordAsync(user, model.Password);
 
@@ -205,6 +227,66 @@ namespace The_Gram.Controllers
                 ModelState.AddModelError("", "Failed to delete user");
                 return View(model);
             }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Account(string id)
+        {
+            var user = await this.userService.GetByIdAsync(id);
+            var userAccountViewModel = new UserAccountViewModel(){
+            Id = id,
+            PictureUr = user.Picture,
+            FullName= user.FullName,
+            Bio = user.Bio,
+            Username = user.UserName
+            };
+            return View(userAccountViewModel);
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = await this.userService.GetByIdAsync(id);
+            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var userIsAdmin = await userManager.IsInRoleAsync(currentUser, "Admin");
+            var userAccountViewModel = new UserAccountViewModel()
+            {
+                Id = id,
+                PictureUr = user.Picture,
+                FullName = user.FullName,
+                Bio = user.Bio,
+                Username = user.UserName
+            };
+
+            if (currentUser.Id != id && !userIsAdmin)
+            {
+                return RedirectToAction("Become", "Admin");
+            }
+
+            return View(userAccountViewModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(string id, UserAccountViewModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+
+            var edited = await this.userService.Edit(
+                id,
+                model.FullName,
+                model.PictureUr,
+                model.Bio,
+                model.Username);
+            if (!edited)
+            {
+                return BadRequest();
+            }
+          return RedirectToAction(nameof(Index),"Home");
         }
     }
 }

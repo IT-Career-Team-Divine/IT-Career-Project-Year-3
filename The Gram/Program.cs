@@ -33,6 +33,7 @@ builder.Services.Configure<IdentityOptions>(options => options.ClaimsIdentity.Us
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailSender, EmailSenderService>();
+builder.Services.AddTransient<IAdminService, AdminService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,7 +64,7 @@ using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    var roles = new[] { "Admin" };
+    var roles = new[] { "Admin","User" };
 
     foreach (var role in roles)
     {
@@ -77,15 +78,17 @@ using (var scope = app.Services.CreateScope())
 using (var scope = app.Services.CreateScope())
 {
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-
+    string username = "Admin";
+    string name = "Main Admin";
     string email = "admin@admin.com";
     string password = "Admin@123";
 
     if (await userManager.FindByEmailAsync(email) == null)
     {
         var user = new User();
-        user.UserName = email;
+        user.UserName = username;
         user.Email = email;
+        user.FullName= name;
 
         await userManager.CreateAsync(user, password);
 

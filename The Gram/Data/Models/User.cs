@@ -6,8 +6,7 @@ namespace The_Gram.Data.Models
 {
     public class User : IdentityUser
     {
-         string defaultPhoto = "https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/";
-         string defaultBio = "Put in bio";
+        static string defaultPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
         public User()
         {
             this.Posts = new HashSet<Post>();
@@ -21,8 +20,8 @@ namespace The_Gram.Data.Models
         [Required]
         [MaxLength(MaxNameLength)]
         public string FullName{ get; set; }
-        public string Bio { get { return defaultBio; } set { defaultBio = value; } }
-        public string Picture { get { return defaultPhoto; } set { defaultPhoto = value; } }
+        public string Bio { get; set; }
+        public string Picture { get; set; } = defaultPhoto;
         public IEnumerable<Post> Posts { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
         public IEnumerable<Message> SentMessages { get; set; }
@@ -30,5 +29,6 @@ namespace The_Gram.Data.Models
         public IEnumerable<User> Friends { get; set; }
         public IEnumerable<User> Followers { get; set; }
         public IEnumerable<Reaction> Reactions { get; set; }
+        public BecomeAdminApplication AdminApplication { get; set; }
     }
 }

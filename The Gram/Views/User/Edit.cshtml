@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using The_Gram.Data.Models;
+@using The_Gram.Models.User;
+@using The_Gram.Services;
+@model UserAccountViewModel
+@inject IUserService userService
+@inject UserManager<User> UserManager
+
+@{
+    User user = await UserManager.GetUserAsync(User);
+    string userId = user.Id;
+    ViewData["Title"] = $"{Model.Username}'s profile.";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <form id="editForm" method="post">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.Username">Username</label>
+                <input class="form-control " autocomplete="username" aria-required="true" asp-for="@Model.Username" placeholder="@Model.Username"/>
+                <span asp-validation-for="@Model.Username" class="text-danger"></span>
+            </div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.FullName">Name</label>
+                <input class="form-control " autocomplete="first name" aria-required="true" asp-for="@Model.FullName" placeholder="@Model.FullName" />
+                <span asp-validation-for="@Model.FullName" class="text-danger"></span>
+            </div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.Bio">Bio</label>
+                <input class="form-control " autocomplete="username" aria-required="true" asp-for="@Model.Bio" placeholder="@Model.Bio" />
+                <span asp-validation-for="@Model.Bio" class="text-danger"></span>
+            </div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.PictureUr">Picture Url</label>
+                <input class="form-control" autocomplete="new-password" aria-required="true" asp-for="@Model.PictureUr" placeholder="@Model.PictureUr" />
+                <span asp-validation-for="@Model.PictureUr" class="text-danger"></span>
+            </div>
+            <div class="text-center">
+                <button id="editSubmit" type="submit" class="btn btn-primary">Edit</button>
+            </div>
+        </form>
+    </section>
+</div>
+</div>

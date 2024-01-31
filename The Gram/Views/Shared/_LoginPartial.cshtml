@@ -3,22 +3,30 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+
+    @{
+var user = await UserManager.GetUserAsync(User);
+}
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark"asp-area="" asp-controller="User" asp-action="Manage" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
+            <li class="nav-item">
+            <a class="nav-link text-dark" asp-action="Account" asp-controller="User" asp-route-id ="@user.Id"><img class="rounded-circle shadow-4-strong" src=@user.Picture height="24" alt="Hello, @user?.FullName!"/></a>
+        </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="" asp-controller="User" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
         </form>
     </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-area="" asp-controller="User" asp-action="Delete">
-                <button type="submit" class="nav-link btn btn-link text-dark">Delete</button>
+    @if (User.IsInRole("User"))
+        {
+            <li class="nav-item">
+            <form class="form-inline" asp-area="" asp-controller="Admin" asp-action="Become">
+                <button type="submit" class="nav-link btn btn-link text-dark">Become Admin</button>
             </form>
         </li>
+        }
+        
 }
 else
 {
