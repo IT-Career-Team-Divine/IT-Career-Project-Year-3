@@ -176,6 +176,27 @@ namespace The_Gram.Controllers
         {
             return View();
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var userToDelete = await this.userService.GetByIdAsync(id);
+            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var userIsAdmin = await userManager.IsInRoleAsync(currentUser, "Admin");
+            if (id == null)
+            {
+                ModelState.AddModelError("", "There isn't such a user");
+                return RedirectToAction("Index", "Home");
+            }
+            if (userToDelete != currentUser && !userIsAdmin)
+            {
+                ModelState.AddModelError("", "This isn't your account and you are not an Administrator, you have no premission to delete it");
+                return RedirectToAction("Index", "Home");
+            }
+            DeletionViewModel model = new DeletionViewModel();
+            return View(model);
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Delete(string id,DeletionViewModel model)
