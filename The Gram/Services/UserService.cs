@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using The_Gram.Data;
 using The_Gram.Data.Models;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace The_Gram.Services
 {
@@ -19,15 +21,15 @@ namespace The_Gram.Services
             this.signInManager = signInManager;
         }
 
-        public Task<User> GetByIdAsync(string id)
+        public async Task<User> GetByIdAsync(string id)
         {
-            var user = userManager.FindByIdAsync(id);
-            return user;
+            var user =  await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return (User)user;
         }
 
         public async Task<User> GetByUsernameAsync(string username)
         {
-            User user = await userManager.FindByNameAsync(username);
+            User user = (User)await context.Users.FirstOrDefaultAsync(u => u.UserName == username);
             return user;
         }
 
@@ -65,7 +67,7 @@ namespace The_Gram.Services
 
         public async Task<User> GetByEmailAsync(string email)
         {
-            User user = await userManager.FindByEmailAsync(email);
+            User user = (User)await context.Users.FirstOrDefaultAsync(u => u.Email == email);
             return user;
         }
 

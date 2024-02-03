@@ -205,20 +205,6 @@ namespace The_Gram.Controllers
             {
                 return View(model);
             }
-            var userToDelete = await this.userService.GetByIdAsync(id);
-            var currentUser = await userManager.GetUserAsync(HttpContext.User);
-            var userIsAdmin = await userManager.IsInRoleAsync(currentUser, "Admin");
-            if (id == null)
-            {
-                ModelState.AddModelError("", "There isn't such a user");
-                return RedirectToAction("Index", "Home");
-            }
-            if (userToDelete != currentUser && !userIsAdmin)
-            {
-                ModelState.AddModelError("", "This isn't your account and you are not an Administrator, you have no premission to delete it");
-                return RedirectToAction("Index", "Home");
-            }
-
             var user = await userService.GetByUsernameAsync(model.Username);
 
             if (user == null)
@@ -307,7 +293,7 @@ namespace The_Gram.Controllers
             {
                 return BadRequest();
             }
-          return RedirectToAction(nameof(Index),"Home");
+            return Redirect($"~/User/Account/{id}");
         }
     }
 }

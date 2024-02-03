@@ -26,17 +26,13 @@
     @if (userId == Model.Id)
     {
         <div class="text-center">
-                <form class="form-inline" asp-area="" asp-controller="User" asp-route-id ="@user.Id" asp-action="Edit">
-                <button type="submit" class="btn-warning">Edit</button>
-            </form>
+            <a asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Edit" class="btn btn-warning" role="button">Edit</a>
             </div>
     }
     @if (await UserManager.IsInRoleAsync(user,"Admin") || userId == Model.Id)
     { 
         <div class="text-center">
-                <form class="form-inline" asp-area="" asp-controller="User" asp-route-id ="@user.Id" asp-action="Delete">
-                <button type="submit" class="btn-danger">Delete</button>
-            </form>
+        <a asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Delete" class="btn btn-danger" role="button">Delete</a>
         </div>
     }
         </section>

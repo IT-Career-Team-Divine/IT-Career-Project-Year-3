@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using The_Gram.Data.Models;
 using The_Gram.Models.Admin;
 using The_Gram.Services;
 
@@ -8,13 +10,22 @@ namespace The_Gram.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-       public IAdminService adminService;
-        public AdminController(IAdminService adminService)
+        public IAdminService adminService;
+        public UserManager<User> userManager;
+        public AdminController(IAdminService adminService, UserManager<User> userManager)
         {
             this.adminService = adminService;
+            this.userManager = userManager;
         }
-       [HttpPost]
-       [Authorize(Roles = "User")]
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Become()
+        {
+            BecomeAdminApplicationViewModel model1 = new BecomeAdminApplicationViewModel();
+            return View(model1);
+        }
+        [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Become(BecomeAdminApplicationViewModel model)
         {
             if (!ModelState.IsValid)
@@ -22,7 +33,7 @@ namespace The_Gram.Controllers
                 return View(model);
 
             }
-           var result = await adminService.MakeAdminApplicationAsync(model);
+            var result = await adminService.MakeAdminApplicationAsync(model);
             if (result == null)
             {
                 return View(model);
@@ -34,4 +45,6 @@ namespace The_Gram.Controllers
             return View();
         }
     }
+
+    
 }
