@@ -8,6 +8,7 @@ using The_Gram.Models.User;
 using The_Gram.Services;
 using static The_Gram.Data.Constants.Constants.UserConstants;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
+using Microsoft.EntityFrameworkCore;
 
 namespace The_Gram.Controllers
 {
@@ -295,5 +296,35 @@ namespace The_Gram.Controllers
             }
             return Redirect($"~/User/Account/{id}");
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UserSearch(SearchUsersViewModel model, string? returnUrl)
+        {
+            
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (string.IsNullOrEmpty(model.Query))
+            {
+                ModelState.AddModelError("", "Please enter a search query.");
+                return View(model);
+            }
+
+            var user = await userService.GetByUsernameAsync(model.Query); 
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "No user found with the specified username.");
+                return View(model);
+            }
+
+            model.SearchResults = new List<User> { user };
+
+            return View(model);
+        }
+
     }
 }

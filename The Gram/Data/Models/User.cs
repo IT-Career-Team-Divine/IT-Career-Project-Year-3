@@ -13,13 +13,13 @@ namespace The_Gram.Data.Models
             this.Comments = new HashSet<Comment>();
             this.Friends = new HashSet<User>();
             this.Followers = new HashSet<User>();
-            this.SentMessages= new HashSet<Message>();
-            this.Reactions= new HashSet<Reaction>();
+            this.SentMessages = new HashSet<Message>();
+            this.Reactions = new HashSet<Reaction>();
             this.RecievedMessages = new HashSet<Message>();
         }
         [Required]
         [MaxLength(MaxNameLength)]
-        public string FullName{ get; set; }
+        public string FullName { get; set; }
         public string Bio { get; set; }
         public string Picture { get; set; } = defaultPhoto;
         public IEnumerable<Post> Posts { get; set; }
