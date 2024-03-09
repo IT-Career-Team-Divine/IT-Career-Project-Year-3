@@ -1,14 +1,15 @@
-﻿using Microsoft.Build.Framework;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace The_Gram.Models.User
 {
     public  class LoginViewModel
     {
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         public string Username { get; set; }
+        [Required]
+        public string Email { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

@@ -24,14 +24,20 @@
             </div>
             <div class="text-center mb-3">
                 <label asp-for="@Model.Email">Email</label>
-                <input class="form-control " autocomplete="username" aria-required="true" asp-for="@Model.Email" />
+                <input class="form-control " autocomplete="email" aria-required="true" asp-for="@Model.Email" />
                 <span asp-validation-for="@Model.Email" class="text-danger"></span>
             </div>
             <div class="text-center mb-3">
             <label asp-for="@Model.Bio">Bio</label>
-            <input class="form-control " autocomplete="username" aria-required="true" asp-for="@Model.Bio" />
+            <input class="form-control " aria-required="true" asp-for="@Model.Bio" />
             <span asp-validation-for="@Model.Bio" class="text-danger"></span>
             </div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.PhotoUrl">Profile Picture URL</label>
+                <input class="form-control " aria-required="true" asp-for="@Model.PhotoUrl" />
+                <span asp-validation-for="@Model.PhotoUrl" class="text-danger"></span>
+            </div>
+
             <div class="text-center mb-3">
                 <label asp-for="@Model.Password">Password</label>
                 <input class="form-control" type="password" autocomplete="new-password" aria-required="true" asp-for="@Model.Password"/>
@@ -41,6 +47,11 @@
                 <label asp-for="@Model.ConfirmPassword">Confirm Password</label>
                 <input class="form-control" type="password" autocomplete="new-password" aria-required="true" asp-for="@Model.ConfirmPassword" />
                 <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.IsPrivate">Is A Private Profile</label>
+                <input id="IsPrivate" name="IsPrivate" type="checkbox" value="true" @(Model.IsPrivate ? "checked" : "") />
+                <span asp-validation-for="@Model.IsPrivate" class="text-danger"></span>
             </div>
             <div class="text-center">
                 <button id="registerSubmit" type="submit" class="btn btn-primary">Register</button>

@@ -6,9 +6,9 @@ namespace The_Gram.Data.Models
     public class BecomeAdminApplication
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         [ForeignKey(nameof(Applicant))]
         public string ApplicantId { get; set; }
-        public User Applicant { get; set; }
+        public UserProfile Applicant { get; set; }
     }
 }

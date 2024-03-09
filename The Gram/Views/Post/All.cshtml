@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using The_Gram.Data.Models;
+@using The_Gram.Models.Post;
+@using The_Gram.Services;
+@model IEnumerable<AllPostsViewModel>
+@inject UserManager<User> UserManager
+@inject IUserService UserService
+@{
+        User user =  await UserManager.GetUserAsync(User);
+    UserProfile profile = await UserService.GetProfileByIdAsync(user.CurrentProfileId);
+    ViewBag.Title = $"{profile.Username}'s feed";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-center row">
+    @foreach (var e in Model)
+    {
+        <div class="card col-4" style="width: 20rem; ">
+            <div class="card-body">
+                <h4 class="card-title mt-1">@e.Description</h4>
+                <div>@foreach (var image in e.Images)
+                    {
+                        <img src="@image.URL" height="60" />
+                    }
+</div>
+            </div>
+
+            <a asp-controller="Post" asp-action="Details" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Details</a>
+            @if (profile.Username == e.Author)
+            {
+                <a asp-controller="Post" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+            }
+            else
+            {
+                <form class="input-group-sm" asp-controller="Seminar" asp-action="Join" asp-route-id="@e.Id">
+                    <input type="submit" value="Subscribe" class="fs-6 btn btn-warning mb-2 w-100 p-3 fw-bold" />
+                </form>
+            }
+        </div>
+    }
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

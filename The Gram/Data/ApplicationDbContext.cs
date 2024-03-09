@@ -12,23 +12,29 @@ namespace The_Gram.Data
         }
 
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<Message> Messages { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<BecomeAdminApplication> adminApplications { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<PostComment> PostComments { get; set; }
+        public DbSet<PostReaction> PostReactions { get; set; }
+        public DbSet<PostCommentReaction> PostCommentReactions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-         builder.Entity<Post>().ToTable("Posts").HasOne(p => p.User).WithMany(u => u.Posts).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
+         builder.Entity<UserProfile>().HasMany(up => up.Posts).WithOne().HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Post>().HasMany(p => p.Comments).WithOne(c => c.Post).HasForeignKey(c => c.PostId).OnDelete(DeleteBehavior.Restrict);
-          builder.Entity<Reaction>().HasOne(r => r.User).WithMany(u => u.Reactions).HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Cascade);
-         builder.Entity<Message>().HasOne(m => m.Reciever).WithMany(u => u.RecievedMessages).HasForeignKey(m => m.RecieverId).OnDelete(DeleteBehavior.Restrict);
-         builder.Entity<Message>().ToTable("Messages").HasOne(m => m.User).WithMany(u => u.SentMessages).HasForeignKey(m => m.UserId).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<Comment>().ToTable("Comments").HasOne(c => c.User).WithMany(u => u.Comments).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Cascade);
-         builder.Entity<Reaction>().ToTable("Reactions").HasOne(r => r.Content).WithMany(c => c.Reactions).HasForeignKey(r => r.ContentId).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<Image>().ToTable("Images").HasOne(i => i.Content).WithMany(c => c.Images).HasForeignKey(i => i.ContentId).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<BecomeAdminApplication>().ToTable("AdminApplications").HasOne(ada => ada.Applicant).WithOne(a=> a.AdminApplication).OnDelete(DeleteBehavior.Cascade);
+          builder.Entity<PostReaction>().HasOne(r => r.User).WithMany(u => u.Reactions).HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<PostComment>().HasOne(c => c.Post).WithMany(u => u.Comments).HasForeignKey(c => c.PostId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<PostComment>().HasMany(pc => pc.Reactions).WithOne(pcr => pcr.Comment).HasForeignKey(pc => pc.CommentId).OnDelete(DeleteBehavior.Restrict);
+         builder.Entity<PostReaction>().ToTable("Reactions").HasOne(r => r.Post).WithMany(c => c.Reactions).HasForeignKey(r => r.PostId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<UserProfile>().HasMany(up => up.Comments).WithOne(pc => pc.Commenter);
+            builder.Entity<Image>().ToTable("Images").HasOne(i => i.Content).WithMany(c => c.Images).HasForeignKey(i => i.ContentId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<BecomeAdminApplication>().ToTable("AdminApplications").HasOne(ada => ada.Applicant).WithOne(a=> a.AdminApplication).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<UserProfile>().HasMany(up => up.Followers).WithOne(f => f.Profile);
+            builder.Entity<UserProfile>().HasMany(up => up.Friends).WithOne(f => f.Profile);
+            builder.Entity<User>().HasOne(u => u.CurrentProfile).WithOne(cp => cp.User).OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

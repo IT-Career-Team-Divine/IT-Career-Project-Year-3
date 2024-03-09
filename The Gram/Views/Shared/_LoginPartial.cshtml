@@ -1,17 +1,19 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using The_Gram.Data.Models;
+@using The_Gram.Services;
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject IUserService userService
 
-
-    @{
-var user = await UserManager.GetUserAsync(User);
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var profile = await userService.GetProfileByIdAsync(user?.CurrentProfileId);
 }
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
             <li class="nav-item">
-            <a class="nav-link text-dark" asp-action="Account" asp-controller="User" asp-route-id ="@user.Id"><img class="rounded-circle shadow-4-strong" src=@user.Picture height="24" alt="Hello, @user?.FullName!"/></a>
+            <a class="nav-link text-dark" asp-action="Account" asp-controller="User" asp-route-id="@profile?.Id"><img class="rounded-circle shadow-4-strong" src ="@profile?.Picture"  height="24" alt="Hello @profile?.Picture" /></a>
         </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="" asp-controller="User" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
@@ -26,7 +28,14 @@ var user = await UserManager.GetUserAsync(User);
             </form>
         </li>
         }
-        
+        if (User.IsInRole("Admin") && profile?.IsAdmin == true)
+        {
+            <li class="nav-item">
+                <form class="form-inline">
+                    <a class="nav-link btn btn-link text-dark" asp-area="" asp-controller="Admin" asp-action="Approve">Approve other Admin Applications</a>
+                </form>
+            </li>
+        }        
 }
 else
 {
