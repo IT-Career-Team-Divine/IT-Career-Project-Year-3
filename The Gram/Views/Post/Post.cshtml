@@ -1,5 +1,4 @@
 ﻿@model PostCreationViewModel
-@using DynamicVML.Extensions;
 @using The_Gram.Models.Post
 @{
     ViewData["Title"] = "post";
@@ -34,15 +33,16 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />}
-    <script>
-        document.getElementById('addImageUrl').addEventListener('click', function () {
-            var container = document.getElementById('imageUrlsContainer');
-            var input = document.createElement('input');
-            input.className = 'form-control';
-            input.name = 'imageUrls[]';
-            input.required = true;
-            container.appendChild(document.createElement('br'));
-            container.appendChild(input);
-        });
-    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
+<script>
+    document.getElementById('addImageUrl').addEventListener('click', function () {
+        var container = document.getElementById('imageUrlsContainer');
+        var input = document.createElement('input');
+        input.className = 'form-control';
+        input.name = 'imageUrls[]';
+        input.required = true;
+        container.appendChild(document.createElement('br'));
+        container.appendChild(input);
+    });
+</script>

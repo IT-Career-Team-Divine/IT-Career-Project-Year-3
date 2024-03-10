@@ -20,6 +20,6 @@ namespace The_Gram.Data.Models
         public string Text { get; set; }
         public List<Reaction> Reactions { get; set; }
         public List<Image> Images { get; set; }
-     
+
     }
 }

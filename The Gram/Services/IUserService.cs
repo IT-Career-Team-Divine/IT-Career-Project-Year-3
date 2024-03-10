@@ -9,7 +9,7 @@ namespace The_Gram.Services
     {
         Task<UserProfile> GetByUsernameAsync(string username);
         Task<User> GetByEmailAsync(string email);
-        Task<bool> MakeUserAsync(User user,RegisterViewModel model);
+        Task<bool> MakeUserAsync(User user, RegisterViewModel model);
         Task<User> GetByIdAsync(string id);
         Task<UserProfile> GetProfileByIdAsync(string id);
         Task<bool> SignInUserAsync(User user, LoginViewModel password);

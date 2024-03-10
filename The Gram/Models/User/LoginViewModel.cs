@@ -2,7 +2,7 @@
 
 namespace The_Gram.Models.User
 {
-    public  class LoginViewModel
+    public class LoginViewModel
     {
         [Required]
         public string Username { get; set; }

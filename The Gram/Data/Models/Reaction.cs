@@ -9,6 +9,6 @@ namespace The_Gram.Data.Models
         public string Id { get; init; } = Guid.NewGuid().ToString();
         public UserProfile User { get; set; }
         [ForeignKey(nameof(User))]
-       public string UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

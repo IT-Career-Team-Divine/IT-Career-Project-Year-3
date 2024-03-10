@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TheGram.Migrations
 {
     /// <inheritdoc />
-    public partial class RemappingMigration : Migration
+    public partial class CascadeMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -79,7 +79,7 @@ namespace TheGram.Migrations
                         column: x => x.ApplicantId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,7 +133,7 @@ namespace TheGram.Migrations
                         column: x => x.UserId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -286,11 +286,11 @@ namespace TheGram.Migrations
                         column: x => x.ContentId,
                         principalTable: "Content",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostComment",
+                name: "PostComments",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -301,20 +301,20 @@ namespace TheGram.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostComment", x => x.Id);
+                    table.PrimaryKey("PK_PostComments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostComment_Content_PostId",
+                        name: "FK_PostComments_Content_PostId",
                         column: x => x.PostId,
                         principalTable: "Content",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PostComment_PostComment_PostCommentId",
+                        name: "FK_PostComments_PostComments_PostCommentId",
                         column: x => x.PostCommentId,
-                        principalTable: "PostComment",
+                        principalTable: "PostComments",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PostComment_UserProfiles_CommenterId",
+                        name: "FK_PostComments_UserProfiles_CommenterId",
                         column: x => x.CommenterId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
@@ -341,9 +341,9 @@ namespace TheGram.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Reactions_PostComment_CommentId",
+                        name: "FK_Reactions_PostComments_CommentId",
                         column: x => x.CommentId,
-                        principalTable: "PostComment",
+                        principalTable: "PostComments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -351,13 +351,13 @@ namespace TheGram.Migrations
                         column: x => x.UserId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reactions_UserProfiles_UserId1",
                         column: x => x.UserId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -423,18 +423,18 @@ namespace TheGram.Migrations
                 column: "ContentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostComment_CommenterId",
-                table: "PostComment",
+                name: "IX_PostComments_CommenterId",
+                table: "PostComments",
                 column: "CommenterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostComment_PostCommentId",
-                table: "PostComment",
+                name: "IX_PostComments_PostCommentId",
+                table: "PostComments",
                 column: "PostCommentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostComment_PostId",
-                table: "PostComment",
+                name: "IX_PostComments_PostId",
+                table: "PostComments",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
@@ -513,7 +513,7 @@ namespace TheGram.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "PostComment");
+                name: "PostComments");
 
             migrationBuilder.DropTable(
                 name: "Content");

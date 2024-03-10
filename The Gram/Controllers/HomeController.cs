@@ -18,7 +18,7 @@ namespace The_Gram.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("All", "Post");
+                return RedirectToAction("Feed", "Post");
 
             }
             return View();

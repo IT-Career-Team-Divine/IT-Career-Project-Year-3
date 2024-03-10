@@ -19,7 +19,7 @@
         {
             public const int MinURLLength = 4;
         }
-         public class ContentConstants
+        public class ContentConstants
         {
             public const int MaxContentTextLength = 2200;
             public const int MinContentTextLength = 1;

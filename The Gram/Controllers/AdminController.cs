@@ -40,8 +40,8 @@ namespace The_Gram.Controllers
                 return View(model);
 
             }
-            var currentUser = await userManager.GetUserAsync( HttpContext.User);
-            var result = await adminService.MakeAdminApplicationAsync(model,currentUser);
+            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var result = await adminService.MakeAdminApplicationAsync(model, currentUser);
             if (result == null)
             {
                 return View(model);
@@ -53,8 +53,8 @@ namespace The_Gram.Controllers
             return View();
         }
         [HttpGet]
-        [Authorize(Roles ="Admin")]
-        public async  Task<IActionResult> Approve()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Approve()
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
             var profile = await userService.GetProfileByIdAsync(user.CurrentProfileId);
@@ -83,22 +83,22 @@ namespace The_Gram.Controllers
         {
             var currentUser = await userManager.GetUserAsync(HttpContext.User);
             var currentProfile = await userService.GetProfileByIdAsync(currentUser.CurrentProfileId);
-            if (currentProfile == null || currentProfile.IsAdmin == false) 
+            if (currentProfile == null || currentProfile.IsAdmin == false)
             {
                 return RedirectToAction("Index", "Home");
             }
             var profileToMakeAdmin = await userService.GetProfileByIdAsync(id);
             var userToMakeAdmin = await userService.GetByIdAsync(profileToMakeAdmin.UserId);
 
-          var result =  await adminService.MakeAdminAsync(userToMakeAdmin, profileToMakeAdmin);
+            var result = await adminService.MakeAdminAsync(userToMakeAdmin, profileToMakeAdmin);
             if (!result)
             {
                 return RedirectToAction("Index", "Home");
             }
-            var callbackUrl = Url.Action("Account", "User", new { profileToMakeAdmin.Id}, Request.Scheme);
+            var callbackUrl = Url.Action("Account", "User", new { profileToMakeAdmin.Id }, Request.Scheme);
             await emailSender.SendEmailAsync(userToMakeAdmin.Email, "Confirm your account",
            $"Your admin application has been approved the following link redirects to the profile that is now an admin: {callbackUrl}'");
-            return RedirectToAction(nameof(SuccessApproval),"Admin");
+            return RedirectToAction(nameof(SuccessApproval), "Admin");
 
         }
 
@@ -108,5 +108,5 @@ namespace The_Gram.Controllers
         }
     }
 
-    
+
 }

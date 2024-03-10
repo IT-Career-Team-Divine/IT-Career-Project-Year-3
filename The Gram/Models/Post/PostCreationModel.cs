@@ -1,5 +1,4 @@
-﻿using DynamicVML;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using The_Gram.Data.Models;
 
 namespace The_Gram.Models.Post

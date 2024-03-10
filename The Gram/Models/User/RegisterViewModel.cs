@@ -19,7 +19,7 @@ namespace The_Gram.Models.User
         [RegularExpression("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", ErrorMessage = "Please enter a valid mail adress")]
         public string Email { get; set; } = null!;
         [StringLength(MaxBioLength)]
-        public string? Bio { get; set;}
+        public string? Bio { get; set; }
 
         [DefaultValue("https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/")]
         [MinLength(MinURLLength, ErrorMessage = "{0} should be atleast {1} characters")]

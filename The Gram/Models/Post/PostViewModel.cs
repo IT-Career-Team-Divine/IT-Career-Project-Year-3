@@ -1,4 +1,5 @@
 ﻿using The_Gram.Data.Models;
+using The_Gram.Data.Models.The_Gram.Data.Models;
 
 namespace The_Gram.Models.Post
 {

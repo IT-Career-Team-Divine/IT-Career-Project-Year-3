@@ -19,7 +19,7 @@ namespace The_Gram.Controllers
         private readonly IUserService userService;
         private readonly IEmailSender emailSender;
         private readonly UserManager<User> userManager;
-        private readonly  IAdminService adminService;
+        private readonly IAdminService adminService;
 
         public UserController(
             SignInManager<User> _signInManager,
@@ -30,7 +30,7 @@ namespace The_Gram.Controllers
             userService = _userService;
             emailSender = _emailSender;
             userManager = _userManager;
-            adminService= _adminService;
+            adminService = _adminService;
         }
 
         [HttpGet]
@@ -133,7 +133,7 @@ namespace The_Gram.Controllers
 
             if (user != null)
             {
-                var userSignedIn = await userService.SignInUserAsync(user,model);
+                var userSignedIn = await userService.SignInUserAsync(user, model);
                 if (userSignedIn == true)
                 {
                     if (Url.IsLocalUrl(returnUrl))
@@ -160,7 +160,7 @@ namespace The_Gram.Controllers
         }
 
         public async Task<IActionResult> Logout()
-        {                
+        {
             await signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
@@ -212,7 +212,7 @@ namespace The_Gram.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Delete(string id,DeletionViewModel model)
+        public async Task<IActionResult> Delete(string id, DeletionViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -243,12 +243,13 @@ namespace The_Gram.Controllers
         public async Task<IActionResult> Account(string id)
         {
             var profile = await this.userService.GetProfileByIdAsync(id);
-            var userAccountViewModel = new UserAccountViewModel(){
-            Id = id,
-            PictureUr = profile.Picture,
-            FullName= profile.FullName,
-            Bio = profile.Bio,
-            Username = profile.Username
+            var userAccountViewModel = new UserAccountViewModel()
+            {
+                Id = id,
+                PictureUr = profile.Picture,
+                FullName = profile.FullName,
+                Bio = profile.Bio,
+                Username = profile.Username
             };
             return View(userAccountViewModel);
         }
@@ -259,7 +260,7 @@ namespace The_Gram.Controllers
             var profile = await this.userService.GetProfileByIdAsync(id);
             var user = await userService.GetByIdAsync(profile.UserId);
             var currentUser = await userManager.GetUserAsync(HttpContext.User);
-            var userIsAdmin = await adminService.IsAdminAsync(user,profile);
+            var userIsAdmin = await adminService.IsAdminAsync(user, profile);
 
             if (currentUser.Id != profile.UserId && !userIsAdmin)
             {

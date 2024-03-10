@@ -1061,5 +1061,3 @@ C:\Users\Stefan-Gaming\Source\Repos\IT-Career-Project-Year-3\The Gram\bin\Debug\
 C:\Users\Stefan-Gaming\Source\Repos\IT-Career-Project-Year-3\The Gram\bin\Debug\net7.0\MimeKit.dll
 C:\Users\Stefan-Gaming\Source\Repos\IT-Career-Project-Year-3\The Gram\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\Stefan-Gaming\Source\Repos\IT-Career-Project-Year-3\The Gram\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
-D:\IT-Career-Project-Year-3-main\The Gram\bin\Debug\net7.0\DynamicVML.Views.dll
-D:\IT-Career-Project-Year-3-main\The Gram\bin\Debug\net7.0\DynamicVML.dll

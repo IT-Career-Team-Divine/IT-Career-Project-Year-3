@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using static The_Gram.Data.Constants.Constants.UserConstants;
 using System.ComponentModel.DataAnnotations.Schema;
+using The_Gram.Data.Models.The_Gram.Data.Models;
 
 namespace The_Gram.Data.Models
 {
@@ -16,7 +17,7 @@ namespace The_Gram.Data.Models
             this.Friends = new List<ProfileFriendMapping>();
             this.Followers = new List<ProfileFollowerMapping>();
             this.Reactions = new List<PostReaction>();
-            this.PostCommentReactions= new List<PostCommentReaction>();
+            this.PostCommentReactions = new List<PostCommentReaction>();
         }
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }

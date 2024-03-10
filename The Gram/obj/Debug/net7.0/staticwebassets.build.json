@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Q3PefdffhdTxYGJuDGYM/TYWBIotlHHAvPETUUUVEr0=",
+  "Hash": "/IoofP9dhUYTNvnvOpQggWRWabT2hW1wSXJBcUL4G/s=",
   "Source": "The Gram",
   "BasePath": "_content/The Gram",
   "Mode": "Default",
@@ -16,40 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "C:\\Users\\TOP\\.nuget\\packages\\dynamicvml\\1.5.1\\staticwebassets\\lib\\dynamic-viewmodel-lists\\dvml.js",
-      "SourceId": "DynamicVML",
-      "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\TOP\\.nuget\\packages\\dynamicvml\\1.5.1\\staticwebassets\\",
-      "BasePath": "/",
-      "RelativePath": "lib/dynamic-viewmodel-lists/dvml.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\TOP\\.nuget\\packages\\dynamicvml\\1.5.1\\staticwebassets\\lib\\dynamic-viewmodel-lists\\dvml.js"
-    },
-    {
-      "Identity": "C:\\Users\\TOP\\.nuget\\packages\\dynamicvml\\1.5.1\\staticwebassets\\lib\\dynamic-viewmodel-lists\\dvml.min.js",
-      "SourceId": "DynamicVML",
-      "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\TOP\\.nuget\\packages\\dynamicvml\\1.5.1\\staticwebassets\\",
-      "BasePath": "/",
-      "RelativePath": "lib/dynamic-viewmodel-lists/dvml.min.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\TOP\\.nuget\\packages\\dynamicvml\\1.5.1\\staticwebassets\\lib\\dynamic-viewmodel-lists\\dvml.min.js"
-    },
     {
       "Identity": "C:\\Users\\TOP\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\7.0.1\\staticwebassets\\V5\\css\\site.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",

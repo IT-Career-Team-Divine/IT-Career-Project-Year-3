@@ -24,7 +24,7 @@ namespace The_Gram.Services
 
         public async Task<User> GetByIdAsync(string id)
         {
-            var user =  await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
             return (User)user;
         }
 
@@ -37,9 +37,9 @@ namespace The_Gram.Services
         public async Task<bool> MakeUserAsync(User user, RegisterViewModel model)
         {
             var output = false;
-            var userExists =  await this.GetByEmailAsync(model.Email);
+            var userExists = await this.GetByEmailAsync(model.Email);
             var valid = false;
-            if (user != null ) 
+            if (user != null)
             {
                 if (userExists == null)
                 {
@@ -59,11 +59,11 @@ namespace The_Gram.Services
                         valid = true;
                     }
                 }
-                else if (await CheckPasswordAsync(userExists,model.Password))
+                else if (await CheckPasswordAsync(userExists, model.Password))
                 {
-                    valid= true;
+                    valid = true;
                 }
-                if (valid) 
+                if (valid)
                 {
                     output = true;
                     UserProfile profile = new UserProfile()
@@ -85,28 +85,28 @@ namespace The_Gram.Services
 
 
             }
-               
+
             return output;
         }
 
         public async Task<bool> SignInUserAsync(User user, LoginViewModel model)
         {
             var profile = await GetProfileByUserIdAndUsernameAsync(user.Id, model.Username);
-            if (profile == null) 
+            if (profile == null)
             {
                 return false;
-            
+
             }
-            user.CurrentProfileId= profile.Id;
+            user.CurrentProfileId = profile.Id;
             user.CurrentProfile = profile;
             context.SaveChangesAsync();
-            await signInManager.PasswordSignInAsync(user,model.Password,false,false);
+            await signInManager.PasswordSignInAsync(user, model.Password, false, false);
             return true;
         }
 
         public async Task<UserProfile> GetProfileByUserIdAndUsernameAsync(string id, string username)
         {
-           var profile = await context.UserProfiles.FirstOrDefaultAsync(u => u.UserId == id && u.Username == username);
+            var profile = await context.UserProfiles.FirstOrDefaultAsync(u => u.UserId == id && u.Username == username);
             return profile;
         }
 
@@ -115,11 +115,11 @@ namespace The_Gram.Services
             throw new NotImplementedException();
         }
 
-      public async Task<User> GetByEmailAsync(string email)
-      {
+        public async Task<User> GetByEmailAsync(string email)
+        {
             User user = (User)await context.Users.FirstOrDefaultAsync(u => u.Email == email);
             return user;
-      }
+        }
         public async Task<UserProfile> GetProfileByUserIdAsync(string id)
         {
             var profile = await context.UserProfiles.FirstOrDefaultAsync(p => p.User.Id == id);
@@ -128,7 +128,7 @@ namespace The_Gram.Services
 
         public async Task<string> CreateEmailConfirmationTokenAsync(User user)
         {
-           string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             return token;
         }
 
@@ -147,14 +147,14 @@ namespace The_Gram.Services
             }
             var user = await GetByIdAsync(profile.UserId);
 
-               var isValidPassword = await CheckPasswordAsync(user, password);
+            var isValidPassword = await CheckPasswordAsync(user, password);
 
             if (!isValidPassword)
             {
                 return false;
             }
 
-            var result =  context.UserProfiles.Remove(profile);
+            var result = context.UserProfiles.Remove(profile);
             if (result != null)
             {
                 user.CurrentProfileId = null;
@@ -165,21 +165,21 @@ namespace The_Gram.Services
             return false;
         }
 
-        public async Task<bool> CheckPasswordAsync(User user , string password)
+        public async Task<bool> CheckPasswordAsync(User user, string password)
         {
-            var result = await signInManager.CheckPasswordSignInAsync(user,password,false);
+            var result = await signInManager.CheckPasswordSignInAsync(user, password, false);
             return result.Succeeded;
         }
 
         public async Task<bool> Edit(string id, string fullName, string pictureUr, string bio, string username)
         {
-            var userData = await GetByUsernameAsync(username);
+            var userData = await GetProfileByIdAsync(id);
 
             if (userData == null)
             {
                 return false;
             }
-
+            userData.Id= id;
             userData.FullName = fullName;
             userData.Picture = pictureUr;
             userData.Bio = bio;
@@ -192,7 +192,7 @@ namespace The_Gram.Services
 
         public async Task<UserProfile> GetProfileByIdAsync(string id)
         {
-           var profile = await context.UserProfiles.FirstOrDefaultAsync(u => u.Id == id);
+            var profile = await context.UserProfiles.FirstOrDefaultAsync(u => u.Id == id);
             return profile;
         }
 

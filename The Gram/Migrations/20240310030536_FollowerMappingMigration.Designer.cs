@@ -12,8 +12,8 @@ using The_Gram.Data;
 namespace TheGram.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240309141143_RemappingMigration")]
-    partial class RemappingMigration
+    [Migration("20240310030536_FollowerMappingMigration")]
+    partial class FollowerMappingMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -330,7 +330,7 @@ namespace TheGram.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostComment");
+                    b.ToTable("PostComments");
                 });
 
             modelBuilder.Entity("The_Gram.Data.Models.ProfileFollowerMapping", b =>
@@ -351,7 +351,7 @@ namespace TheGram.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("ProfileFollowerMapping");
+                    b.ToTable("ProfileFollowerMappings");
                 });
 
             modelBuilder.Entity("The_Gram.Data.Models.ProfileFriendMapping", b =>
@@ -375,7 +375,7 @@ namespace TheGram.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("ProfileFriendMapping");
+                    b.ToTable("ProfileFriendMappings");
                 });
 
             modelBuilder.Entity("The_Gram.Data.Models.Reaction", b =>
@@ -477,7 +477,7 @@ namespace TheGram.Migrations
                     b.HasDiscriminator().HasValue("PostCommentReaction");
                 });
 
-            modelBuilder.Entity("The_Gram.Data.Models.PostReaction", b =>
+            modelBuilder.Entity("The_Gram.Data.Models.The_Gram.Data.Models.PostReaction", b =>
                 {
                     b.HasBaseType("The_Gram.Data.Models.Reaction");
 
@@ -550,7 +550,7 @@ namespace TheGram.Migrations
                     b.HasOne("The_Gram.Data.Models.UserProfile", "Applicant")
                         .WithOne("AdminApplication")
                         .HasForeignKey("The_Gram.Data.Models.BecomeAdminApplication", "ApplicantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Applicant");
@@ -561,7 +561,7 @@ namespace TheGram.Migrations
                     b.HasOne("The_Gram.Data.Models.Content", "Content")
                         .WithMany("Images")
                         .HasForeignKey("ContentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Content");
@@ -640,7 +640,7 @@ namespace TheGram.Migrations
                     b.HasOne("The_Gram.Data.Models.UserProfile", null)
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -653,18 +653,17 @@ namespace TheGram.Migrations
                         .IsRequired();
 
                     b.HasOne("The_Gram.Data.Models.UserProfile", "User")
-                        .WithMany()
+                        .WithMany("PostCommentReactions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Reactions_UserProfiles_UserId1");
+                        .IsRequired();
 
                     b.Navigation("Comment");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("The_Gram.Data.Models.PostReaction", b =>
+            modelBuilder.Entity("The_Gram.Data.Models.The_Gram.Data.Models.PostReaction", b =>
                 {
                     b.HasOne("The_Gram.Data.Models.Post", "Post")
                         .WithMany("Reactions")
@@ -676,7 +675,8 @@ namespace TheGram.Migrations
                         .WithMany("Reactions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Reactions_UserProfiles_UserId1");
 
                     b.Navigation("Post");
 
@@ -705,6 +705,8 @@ namespace TheGram.Migrations
                     b.Navigation("Followers");
 
                     b.Navigation("Friends");
+
+                    b.Navigation("PostCommentReactions");
 
                     b.Navigation("Posts");
 

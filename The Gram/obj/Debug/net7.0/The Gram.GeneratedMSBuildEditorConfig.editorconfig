@@ -44,20 +44,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/IT-Career-Project-Year-3-main/The Gram/Views/Post/All.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdFxBbGwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/IT-Career-Project-Year-3-main/The Gram/Views/Post/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdFxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/IT-Career-Project-Year-3-main/The Gram/Views/Post/Post.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdFxQb3N0LmNzaHRtbA==
+[D:/IT-Career-Project-Year-3-main/The Gram/Views/Post/Feed.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdFxGZWVkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/IT-Career-Project-Year-3-main/The Gram/Views/Post/PostImagePartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdFxQb3N0SW1hZ2VQYXJ0aWFsLmNzaHRtbA==
+[D:/IT-Career-Project-Year-3-main/The Gram/Views/Post/Post.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdFxQb3N0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/IT-Career-Project-Year-3-main/The Gram/Views/Shared/Error.cshtml]
@@ -94,6 +90,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/IT-Career-Project-Year-3-main/The Gram/Views/User/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/IT-Career-Project-Year-3-main/The Gram/Views/User/SuccessApplication.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxTdWNjZXNzQXBwbGljYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/IT-Career-Project-Year-3-main/The Gram/Views/User/SuccessRegistration.cshtml]
