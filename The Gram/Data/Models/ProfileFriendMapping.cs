@@ -6,5 +6,6 @@
         public long Timestamp { get; set; }
         public UserProfile Profile { get; set; }
         public UserProfile Friend { get; set; }
+        public bool isAccepted { get; set; }
     }
 }

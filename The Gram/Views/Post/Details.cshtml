@@ -1,6 +1,13 @@
-﻿@using The_Gram.Models.Post;
+﻿@using Microsoft.AspNetCore.Identity;
+@using The_Gram.Data.Models;
+@using The_Gram.Models.Post;
+@using The_Gram.Services;
+@inject UserManager<User> UserManager
+@inject IUserService UserService
 @model PostViewModel
 @{
+    User user = await UserManager.GetUserAsync(User);
+    UserProfile profile = await UserService.GetProfileByIdAsync(user.CurrentProfileId);
     ViewBag.Title = $"{@Model.PostCaption}";
 }
 
@@ -22,7 +29,7 @@
 </div>
 <br />
 <div class="text-center mb-3">
-    <form asp-controller="Post" asp-action="AddComment" asp-route-Id="@Model.Id" asp-route-currentImageIndex="@Model.CurrentImageIndex" method="post">
+    <form asp-controller="Post" asp-action="AddComment" asp-route-postId="@Model.Id" asp-route-currentImageIndex="@Model.CurrentImageIndex" asp-route-currentProfileId="@profile.Id" method="post">
         <input type="hidden" name="postId" value="@Model.PostId" />
         <input class="form-control" name="commentText" />
         <button class="btn btn-success" type="submit">Comment</button>
@@ -33,7 +40,8 @@
     <h3>Comments</h3>
     @foreach (var comment in Model.PostComments)
     {
-        <div>@comment.Commenter.Username: @comment.Content</div>
+        var commenter = await UserService.GetProfileByIdAsync(comment.CommenterId);
+        <div>@commenter.Username: @comment.Content</div>
     }
 </div>
 @section Scripts {

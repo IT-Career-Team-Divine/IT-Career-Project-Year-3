@@ -9,6 +9,10 @@
 @{
     User user = await UserManager.GetUserAsync(User);
     UserProfile profile = await userService.GetProfileByIdAsync(user.CurrentProfileId);
+    bool friendRequestSent = await userService.FriendRequestSent(profile.Id, Model.Id);
+    bool friendRequestSentToUser = await userService.FriendRequestSent(Model.Id, profile.Id);
+    bool isFriend = await userService.IsFriend(profile.Id, Model.Id);
+    bool follows = await userService.Follows(profile.Id, Model.Id);
     ViewData["Title"] = $"{Model.Username}'s profile.";
 }
 
@@ -32,8 +36,56 @@
     @if (profile.IsAdmin == true || profile.Id == Model.Id)
     {
         <div class="text-center">
-            <a asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Delete" class="btn btn-danger" role="button">Delete</a>
+            <a asp-area="" asp-controller="User" asp-route-id="@profile.Id" asp-action="Delete" class="btn btn-danger" role="button">Delete</a>
         </div>
+    }
+    @if (profile.Id != Model.Id)
+    {
+        @if (Model.IsPrivate == false && !isFriend && !follows)
+        {
+            <div class="text-center">
+                <a asp-area="" asp-controller="User" asp-route-id="@profile.Id" asp-route-modelId="@Model.Id" asp-action="Follow" class="btn btn-outline-dark" role="button">Follow</a>
+        </div>
+        }
+       @if (Model.IsPrivate == false && !isFriend && follows)
+        {
+            <div class="text-center">
+            <a asp-area="" asp-controller="User" asp-route-id="@profile.Id" asp-route-modelId="@Model.Id" asp-action="Unfollow" class="btn btn-outline-dark" role="button">Unfollow</a>
+            </div>
+        }
+        <br />
+        if (friendRequestSentToUser && !isFriend)
+        {
+            <div class="text-center">
+                <a asp-area="" asp-controller="User" asp-route-id="@profile.Id" asp-route-modelId ="@Model.Id" asp-action="AcceptFriendRequest" class="btn btn-outline-success" role="button">Accept Friend Request</a>
+            </div>
+            <br />
+            <div class="text-center">
+                <a asp-area="" asp-controller="User" asp-route-id="@profile.Id" asp-route-modelId="@Model.Id" asp-action="DeclineFriendRequest" class="btn btn-outline-danger" role="button">Delete Friend Request</a>
+            </div>
+
+        }
+        else if (!friendRequestSent && !isFriend)
+        {
+            <div class="text-center">
+                <a asp-area="" asp-controller="User" asp-route-id="@profile.Id" asp-route-modelId = "@Model.Id"asp-action="SendFriendRequest" class="btn btn-outline-dark" role="button">Send Friend Request</a>
+            </div>
+
+        }
+        else if (friendRequestSent && !isFriend)
+        {
+            <div class="text-center">
+                <a asp-area="" asp-controller="User" asp-route-id="@profile.Id" asp-route-modelId ="@Model.Id" asp-action="CancelFriendRequest" class="btn btn-outline-secondary" role="button">Cancel Friend Request</a>
+            </div>
+        }
+        else if (isFriend)
+        {
+             <div class="text-center">
+                <a asp-area="" asp-controller="User" asp-route-id="@profile.Id" asp-route-modelId ="@Model.Id" asp-action="CancelFriendRequest" class="btn btn-outline-secondary" role="button">Defriend</a>
+            </div>
+        }
+        
+
     }
     </section>
 </div>

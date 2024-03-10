@@ -7,5 +7,6 @@
         public string FullName { get; set; }
         public string Bio { get; set; }
         public string PictureUr { get; set; }
+        public bool IsPrivate { get; set; }
     }
 }

@@ -13,11 +13,13 @@ namespace The_Gram.Controllers
         private readonly IPostService postService;
         private readonly IUserService userService;
         private readonly UserManager<User> userManager;
-        public PostController(IPostService _postService, IUserService _userService, UserManager<User> _userManager)
+        private readonly IAdminService adminService;
+        public PostController(IPostService _postService, IUserService _userService, UserManager<User> _userManager, IAdminService _adminService)
         {
             postService = _postService;
             userService = _userService;
             userManager = _userManager;
+            adminService = _adminService;
         }
         [Authorize]
         [HttpGet]
@@ -133,10 +135,10 @@ namespace The_Gram.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddComment(string postId, int currentImageIndex, string commentText)
+        public async Task<IActionResult> AddComment(string postId, int currentImageIndex, string currentProfileId, string commentText)
         {
             var post = await postService.GetByIdAsync(postId);
-            var user = await userService.GetProfileByIdAsync(post.UserId);
+            var user = await userService.GetProfileByIdAsync(currentProfileId);
             var images = await postService.GetPostImages(postId);
             var likes = await postService.GetPostLikes(postId);
 
@@ -147,6 +149,51 @@ namespace The_Gram.Controllers
 
 
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(string id, string currentProfileId)
+        {
+            var post = await postService.GetByIdAsync(id);
+            var profile = await userService.GetProfileByIdAsync(currentProfileId);
 
+            var user = await userService.GetByIdAsync(profile.UserId);
+            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var userIsAdmin = await adminService.IsAdminAsync(user, profile);
+
+            if (currentUser.Id != profile.UserId && !userIsAdmin)
+            {
+                return RedirectToAction("Become", "Admin");
+            }
+            var userAccountViewModel = new PostCreationViewModel()
+            {
+                Id = id,
+                Description =post.Text,
+            };
+            return View(userAccountViewModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(string id, UserAccountViewModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+
+            var edited = await this.userService.Edit(
+                id,
+                model.FullName,
+                model.PictureUr,
+                model.Bio,
+                model.Username);
+            if (!edited)
+            {
+                return BadRequest();
+            }
+            return Redirect($"~/User/Account/{id}");
+        }
     }
 }

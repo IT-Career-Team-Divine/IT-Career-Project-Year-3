@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using The_Gram.Data.Models;
+@using The_Gram.Models.User;
+@using The_Gram.Services;
+@inject UserManager<User> UserManager
+@inject IUserService UserService
+@model List<AllUsersViewModel>
+@{
+    User user = await UserManager.GetUserAsync(User);
+    UserProfile profile = await UserService.GetProfileByIdAsync(user.CurrentProfileId);
+}
+<h2 class="text-center"></h2>
+<hr />
+
+<div class="text-center row">
+    @foreach (var userView in Model)
+    {
+        <div class="card col-4" style="width: 20rem; ">
+            <div class="card-body">
+                <a class="card-title mt-1" asp-action="Account" asp-controller="User" asp-route-id="@userView.Id">@userView.Username</a>
+                <a class="nav-link text-dark" asp-action="Account" asp-controller="User" asp-route-id="@userView.Id"><img src="@userView.Picture" height="48" /></a>
+            </div>
+        </div>
+
+    }
+</div>

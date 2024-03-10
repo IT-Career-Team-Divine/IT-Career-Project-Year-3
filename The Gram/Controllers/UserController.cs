@@ -9,6 +9,7 @@ using The_Gram.Services;
 using static The_Gram.Data.Constants.Constants.UserConstants;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 using System;
+using The_Gram.Models;
 
 namespace The_Gram.Controllers
 {
@@ -249,7 +250,8 @@ namespace The_Gram.Controllers
                 PictureUr = profile.Picture,
                 FullName = profile.FullName,
                 Bio = profile.Bio,
-                Username = profile.Username
+                Username = profile.Username,
+                IsPrivate = profile.IsPrivate,
             };
             return View(userAccountViewModel);
         }
@@ -312,6 +314,204 @@ namespace The_Gram.Controllers
         {
             return View();
         }
+        [Authorize]
+        public async Task<IActionResult> UserSearch(SearchViewModel<AllUsersViewModel> model, string? returnUrl)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (string.IsNullOrEmpty(model.Query))
+            {
+                ModelState.AddModelError("", "Please enter a search query.");
+                return View(model);
+            }
+
+            var users = await userService.Search(model.Query);
+
+            if (users == null)
+            {
+                ModelState.AddModelError("", "No user found with the specified username.");
+                return View(model);
+            }
+
+            foreach (var user in users)
+            {
+                AllUsersViewModel userViewModel = new AllUsersViewModel()
+                {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Picture = user.Picture
+                };
+                model.SearchResults.Add(userViewModel);
+
+            }
+
+
+            return View(model.SearchResults);
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> SendFriendRequest(string id, string modelId)
+        {
+            var profile = await this.userService.GetProfileByIdAsync(id);
+            var friend = await userService.GetProfileByIdAsync(modelId);
+            if (profile == null || friend == null)
+            {
+                ModelState.AddModelError("", "Please make sure the user you are befriending exists.");
+
+            }
+            bool output = await userService.SendFriendRequest(id,modelId);
+            var userAccountViewModel = new UserAccountViewModel()
+            {
+                Id = modelId,
+                PictureUr = friend.Picture,
+                FullName = friend.FullName,
+                Bio = friend.Bio,
+                Username = friend.Username,
+                IsPrivate= friend.IsPrivate,
+                
+            };
+            return Redirect($"~/User/Account/{modelId}");
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> CancelFriendRequest(string id, string modelId)
+        {
+            var profile = await this.userService.GetProfileByIdAsync(id);
+            var friend = await userService.GetProfileByIdAsync(modelId);
+            if (profile == null || friend == null)
+            {
+                ModelState.AddModelError("", "Please make sure the user you are befriending exists.");
+
+            }
+            bool output = await userService.FriendRequestSent(id, modelId);
+            var userAccountViewModel = new UserAccountViewModel()
+            {
+                Id = modelId,
+                PictureUr = friend.Picture,
+                FullName = friend.FullName,
+                Bio = friend.Bio,
+                Username = friend.Username,
+                IsPrivate = friend.IsPrivate,
+
+            };
+            if (output)
+            {
+               await userService.CancelFriendRequest(id, modelId);
+            }
+
+            return Redirect($"~/User/Account/{modelId}");
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> DeclineFriendRequest(string id, string modelId)
+        {
+            var profile = await this.userService.GetProfileByIdAsync(id);
+            var friend = await userService.GetProfileByIdAsync(modelId);
+            if (profile == null || friend == null)
+            {
+                ModelState.AddModelError("", "Please make sure the user you are befriending exists.");
+
+            }
+            bool output = await userService.FriendRequestSent(modelId, id);
+            var userAccountViewModel = new UserAccountViewModel()
+            {
+                Id = modelId,
+                PictureUr = friend.Picture,
+                FullName = friend.FullName,
+                Bio = friend.Bio,
+                Username = friend.Username,
+                IsPrivate = friend.IsPrivate,
+
+            };
+            if (output)
+            {
+                await userService.CancelFriendRequest(modelId, id);
+            }
+
+            return Redirect($"~/User/Account/{modelId}");
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> AcceptFriendRequest(string id, string modelId)
+        {
+            var profile = await this.userService.GetProfileByIdAsync(id);
+            var friend = await userService.GetProfileByIdAsync(modelId);
+            if (profile == null || friend == null)
+            {
+                ModelState.AddModelError("", "Please make sure the user you are befriending exists.");
+
+            }
+            bool output = await userService.FriendRequestSent(modelId, id);
+            var userAccountViewModel = new UserAccountViewModel()
+            {
+                Id = modelId,
+                PictureUr = friend.Picture,
+                FullName = friend.FullName,
+                Bio = friend.Bio,
+                Username = friend.Username,
+                IsPrivate = friend.IsPrivate,
+
+            };
+            if (output)
+            {
+                await userService.AcceptFreindRequest(modelId, id);
+            }
+
+            return Redirect($"~/User/Account/{modelId}");
+        }
+        public async Task<IActionResult> Follow(string id, string modelId)
+        {
+            var profile = await this.userService.GetProfileByIdAsync(id);
+            var friend = await userService.GetProfileByIdAsync(modelId);
+            if (profile == null || friend == null)
+            {
+                ModelState.AddModelError("", "Please make sure the user you are befriending exists.");
+
+            }
+            bool output = await userService.Follow(modelId, id);
+            var userAccountViewModel = new UserAccountViewModel()
+            {
+                Id = modelId,
+                PictureUr = friend.Picture,
+                FullName = friend.FullName,
+                Bio = friend.Bio,
+                Username = friend.Username,
+                IsPrivate = friend.IsPrivate,
+
+            };
+
+            return Redirect($"~/User/Account/{modelId}");
+        }
+        public async Task<IActionResult> Unfollow(string id, string modelId)
+        {
+            var profile = await this.userService.GetProfileByIdAsync(id);
+            var friend = await userService.GetProfileByIdAsync(modelId);
+            if (profile == null || friend == null)
+            {
+                ModelState.AddModelError("", "Please make sure the user you are befriending exists.");
+
+            }
+            bool output = await userService.Unfollow(modelId, id);
+            var userAccountViewModel = new UserAccountViewModel()
+            {
+                Id = modelId,
+                PictureUr = friend.Picture,
+                FullName = friend.FullName,
+                Bio = friend.Bio,
+                Username = friend.Username,
+                IsPrivate = friend.IsPrivate,
+
+            };
+
+            return Redirect($"~/User/Account/{modelId}");
+        }
+
 
     }
+
+
 }

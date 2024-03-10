@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using The_Gram.Data;
 
@@ -11,9 +12,11 @@ using The_Gram.Data;
 namespace TheGram.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240310051311_FriendRequestAcceptedMigration")]
+    partial class FriendRequestAcceptedMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -340,7 +343,6 @@ namespace TheGram.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProfileId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -362,7 +364,6 @@ namespace TheGram.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProfileId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<long>("Timestamp")
@@ -602,9 +603,7 @@ namespace TheGram.Migrations
 
                     b.HasOne("The_Gram.Data.Models.UserProfile", "Profile")
                         .WithMany("Followers")
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProfileId");
 
                     b.Navigation("Follower");
 
@@ -621,9 +620,7 @@ namespace TheGram.Migrations
 
                     b.HasOne("The_Gram.Data.Models.UserProfile", "Profile")
                         .WithMany("Friends")
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProfileId");
 
                     b.Navigation("Friend");
 
