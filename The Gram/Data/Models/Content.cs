@@ -8,21 +8,18 @@ namespace The_Gram.Data.Models
     {
         public Content()
         {
-            this.Reactions = new HashSet<Reaction>();
-            this.Images = new HashSet<Image>();
+            this.Reactions = new List<Reaction>();
+            this.Images = new List<Image>();
         }
         [Key]
-        public int Id { get; init; }
-        public User User { get; set; }
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+        public string UserId { get; set; }
         public int TotalLikes { get; set; }
-        public ContentType Type { get; set; }
         [Required]
         [MaxLength(MaxContentTextLength)]
         public string Text { get; set; }
-        public IEnumerable<Reaction> Reactions { get; set; }
-        public IEnumerable<Image> Images { get; set; }
-     
-     [Required]
-      public string UserId { get; }
+        public List<Reaction> Reactions { get; set; }
+        public List<Image> Images { get; set; }
+
     }
 }

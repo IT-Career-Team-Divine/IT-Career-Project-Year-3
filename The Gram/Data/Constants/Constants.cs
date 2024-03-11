@@ -6,6 +6,7 @@
         public class UserConstants
         {
             public const string defaultBio = "Put in bio";
+            public const string defaultPicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
             public const int MaxNameLength = 100;
             public const int MinNameLength = 2;
             public const int MaxUsernameLength = 256;
@@ -18,7 +19,7 @@
         {
             public const int MinURLLength = 4;
         }
-         public class ContentConstants
+        public class ContentConstants
         {
             public const int MaxContentTextLength = 2200;
             public const int MinContentTextLength = 1;

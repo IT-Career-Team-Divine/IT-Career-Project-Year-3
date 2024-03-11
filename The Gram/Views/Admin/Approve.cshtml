@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using The_Gram.Data.Models;
+@using The_Gram.Models.User;
+@using The_Gram.Services;
+@inject UserManager<User> UserManager
+@inject IUserService UserService
+@model IEnumerable<AllUsersViewModel>
+@{
+    User user = await UserManager.GetUserAsync(User);
+    UserProfile profile = await UserService.GetProfileByIdAsync(user.CurrentProfileId);
+}
+
+
+<h2 class="text-center"></h2>
+<hr />
+
+<div class="text-center row">
+    @foreach (var applicant in Model)
+    {
+        <div class="card col-4" style="width: 20rem; ">
+            <div class="card-body">
+                <a class="card-title mt-1" asp-action="Account" asp-controller="User" asp-route-id="@applicant.Id">@applicant.Username</a>
+                <a class="nav-link text-dark" asp-action="Account" asp-controller="User" asp-route-id="@applicant.Id"><img src="@applicant.Picture" height="48" /></a>
+                @if (profile.IsAdmin == true)
+                {
+                    <form asp-controller="Admin" asp-route-id="@applicant.Id" asp-action="MakeAdmin" method="POST">
+                        <div class="text-center">
+                            <button class="btn btn-primary" role="button">Approve</button>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+
+    }
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

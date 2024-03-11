@@ -6,12 +6,9 @@ namespace The_Gram.Data.Models
     public class Reaction
     {
         [Key]
-        public int Id { get; init; }
-        public User User { get; set; }
-        [Required]
-       public string UserId { get;}
-        public Content Content { get; set; }
-        [Required]
-        public int ContentId { get; }
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+        public UserProfile User { get; set; }
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
     }
 }

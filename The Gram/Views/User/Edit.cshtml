@@ -9,7 +9,7 @@
 @{
     User user = await UserManager.GetUserAsync(User);
     string userId = user.Id;
-    ViewData["Title"] = $"{Model.Username}'s profile.";
+    ViewData["Title"] = $" Edit {Model.Username}'s profile.";
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>
@@ -20,7 +20,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="text-center mb-3">
                 <label asp-for="@Model.Username">Username</label>
-                <input class="form-control " autocomplete="username" aria-required="true" asp-for="@Model.Username" placeholder="@Model.Username"/>
+                <input class="form-control " autocomplete="username" aria-required="true" asp-for="@Model.Username" placeholder="@Model.Username" />
                 <span asp-validation-for="@Model.Username" class="text-danger"></span>
             </div>
             <div class="text-center mb-3">
@@ -39,9 +39,9 @@
                 <span asp-validation-for="@Model.PictureUr" class="text-danger"></span>
             </div>
             <div class="text-center">
-                <button id="editSubmit" type="submit" class="btn btn-primary">Edit</button>
+                <button id="editSubmit" type="submit" asp-controller="User" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</button>
             </div>
         </form>
-    </section>
-</div>
+        </section>
+    </div>
 </div>

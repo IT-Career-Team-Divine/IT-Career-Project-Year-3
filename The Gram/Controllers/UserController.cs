@@ -8,6 +8,7 @@ using The_Gram.Models.User;
 using The_Gram.Services;
 using static The_Gram.Data.Constants.Constants.UserConstants;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
+using System;
 
 namespace The_Gram.Controllers
 {
@@ -18,16 +19,18 @@ namespace The_Gram.Controllers
         private readonly IUserService userService;
         private readonly IEmailSender emailSender;
         private readonly UserManager<User> userManager;
+        private readonly IAdminService adminService;
 
         public UserController(
             SignInManager<User> _signInManager,
             IUserService _userService,
-            IEmailSender _emailSender, UserManager<User> _userManager)
+            IEmailSender _emailSender, UserManager<User> _userManager, IAdminService _adminService)
         {
             signInManager = _signInManager;
             userService = _userService;
             emailSender = _emailSender;
             userManager = _userManager;
+            adminService = _adminService;
         }
 
         [HttpGet]
@@ -48,17 +51,15 @@ namespace The_Gram.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            
+            var user = new User();
+            var userExists = await userService.GetByEmailAsync(model.Email);
+            var madeUser = false;
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            User userWithEmailExists = await userService.GetByEmailAsync(model.Email);
-            User UserWithUsernameExists = await userService.GetByUsernameAsync(model.UserName);
-            if (userWithEmailExists != null)
-            {
-                ModelState.AddModelError("", "Email is already registered");
-            }
+            UserProfile UserWithUsernameExists = await userService.GetByUsernameAsync(model.UserName);
             if (UserWithUsernameExists != null)
             {
                 ModelState.AddModelError("", "Username is taken, please choose another");
@@ -71,18 +72,27 @@ namespace The_Gram.Controllers
             {
                 model.Bio = defaultBio;
             }
-            var user = new User()
+            if (model.PhotoUrl == null)
             {
-                Email = model.Email,
-                FullName = model.FullName,
-                UserName = model.UserName,
-                Bio = model.Bio
-            };
+                model.PhotoUrl = defaultPicture;
+            }
+            if (userExists == null)
+            {
+                user.Email = model.Email;
+                user.UserName = model.Email;
+                madeUser = await userService.MakeUserAsync(user, model);
+            }
+            else
+            {
+                madeUser = await userService.MakeUserAsync(userExists, model);
 
-
-            var madeUser = await userService.MakeUserAsync(user, model.Password);
+            }
             if (madeUser == true)
             {
+                if (userExists != null)
+                {
+                    return View(nameof(SuccessRegistrationOfAnotherProfile));
+                }
                 var token = await userService.CreateEmailConfirmationTokenAsync(user);
                 var callbackUrl = Url.Action(nameof(ConfirmEmail), "User", new { user.Id, token, user.Email }, Request.Scheme);
                 await emailSender.SendEmailAsync(user.Email, "Confirm your account",
@@ -91,6 +101,7 @@ namespace The_Gram.Controllers
             }
             return View(model);
         }
+
 
         [HttpGet]
         [AllowAnonymous]
@@ -117,12 +128,12 @@ namespace The_Gram.Controllers
             {
                 return View(model);
             }
-            var user = await userService.GetByUsernameAsync(model.Username);
+            var user = await userService.GetByEmailAsync(model.Email);
 
 
             if (user != null)
             {
-                var userSignedIn = await userService.SignInUserAsync(user, model.Password);
+                var userSignedIn = await userService.SignInUserAsync(user, model);
                 if (userSignedIn == true)
                 {
                     if (Url.IsLocalUrl(returnUrl))
@@ -180,15 +191,17 @@ namespace The_Gram.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
-            var userToDelete = await this.userService.GetByIdAsync(id);
-            var currentUser = await userManager.GetUserAsync(HttpContext.User);
-            var userIsAdmin = await userManager.IsInRoleAsync(currentUser, "Admin");
             if (id == null)
             {
                 ModelState.AddModelError("", "There isn't such a user");
                 return RedirectToAction("Index", "Home");
             }
-            if (userToDelete != currentUser && !userIsAdmin)
+
+            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var userToDelete = await userService.GetProfileByIdAsync(currentUser.CurrentProfileId);
+            var userIsAdmin = await userManager.IsInRoleAsync(currentUser, "Admin");
+
+            if (userToDelete.User.Id != currentUser.Id && !userIsAdmin)
             {
                 ModelState.AddModelError("", "This isn't your account and you are not an Administrator, you have no premission to delete it");
                 return RedirectToAction("Index", "Home");
@@ -199,26 +212,17 @@ namespace The_Gram.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Delete(string id,DeletionViewModel model)
+        public async Task<IActionResult> Delete(string id, DeletionViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var user = await userService.GetByUsernameAsync(model.Username);
+            var profile = await userService.GetByUsernameAsync(model.Username);
 
-            if (user == null)
+            if (profile == null)
             {
                 ModelState.AddModelError("", "Invalid username");
-                return View(model);
-            }
-           
-
-            var passwordCorrect = await userService.CheckPasswordAsync(user, model.Password);
-
-            if (!passwordCorrect)
-            {
-                ModelState.AddModelError("", "Invalid password");
                 return View(model);
             }
 
@@ -238,13 +242,14 @@ namespace The_Gram.Controllers
         [HttpGet]
         public async Task<IActionResult> Account(string id)
         {
-            var user = await this.userService.GetByIdAsync(id);
-            var userAccountViewModel = new UserAccountViewModel(){
-            Id = id,
-            PictureUr = user.Picture,
-            FullName= user.FullName,
-            Bio = user.Bio,
-            Username = user.UserName
+            var profile = await this.userService.GetProfileByIdAsync(id);
+            var userAccountViewModel = new UserAccountViewModel()
+            {
+                Id = id,
+                PictureUr = profile.Picture,
+                FullName = profile.FullName,
+                Bio = profile.Bio,
+                Username = profile.Username
             };
             return View(userAccountViewModel);
         }
@@ -252,23 +257,23 @@ namespace The_Gram.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
-            var user = await this.userService.GetByIdAsync(id);
+            var profile = await this.userService.GetProfileByIdAsync(id);
+            var user = await userService.GetByIdAsync(profile.UserId);
             var currentUser = await userManager.GetUserAsync(HttpContext.User);
-            var userIsAdmin = await userManager.IsInRoleAsync(currentUser, "Admin");
-            var userAccountViewModel = new UserAccountViewModel()
-            {
-                Id = id,
-                PictureUr = user.Picture,
-                FullName = user.FullName,
-                Bio = user.Bio,
-                Username = user.UserName
-            };
+            var userIsAdmin = await adminService.IsAdminAsync(user, profile);
 
-            if (currentUser.Id != id && !userIsAdmin)
+            if (currentUser.Id != profile.UserId && !userIsAdmin)
             {
                 return RedirectToAction("Become", "Admin");
             }
-
+            var userAccountViewModel = new UserAccountViewModel()
+            {
+                Id = id,
+                PictureUr = profile.Picture,
+                FullName = profile.FullName,
+                Bio = profile.Bio,
+                Username = profile.Username
+            };
             return View(userAccountViewModel);
         }
 
@@ -295,5 +300,18 @@ namespace The_Gram.Controllers
             }
             return Redirect($"~/User/Account/{id}");
         }
+        private static string RandomString(int length)
+        {
+            Random rand = new Random();
+            const string pool = "abcdefghijklmnopqrstuvwxyz0123456789";
+            var chars = Enumerable.Range(0, length)
+                .Select(x => pool[rand.Next(0, pool.Length)]);
+            return new string(chars.ToArray());
+        }
+        private object SuccessRegistrationOfAnotherProfile()
+        {
+            return View();
+        }
+
     }
 }

@@ -1,12 +1,16 @@
-﻿namespace The_Gram.Data.Models
+﻿using The_Gram.Data.Models.The_Gram.Data.Models;
+
+namespace The_Gram.Data.Models
 {
     public class Post : Content
     {
         public Post()
         {
-            this.Comments = new HashSet<Comment>();
+            this.Comments = new List<PostComment>();
+            this.Reactions = new List<PostReaction>();
         }
-        public IEnumerable<Comment> Comments { get; set; }
+        public List<PostComment> Comments { get; set; }
+        public List<PostReaction> Reactions { get; set; }
 
     }
 }

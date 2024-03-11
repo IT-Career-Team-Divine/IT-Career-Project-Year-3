@@ -7,8 +7,8 @@
 @inject UserManager<User> UserManager
 
 @{
-    User user =  await UserManager.GetUserAsync(User);
-    string userId = user.Id;
+    User user = await UserManager.GetUserAsync(User);
+    UserProfile profile = await userService.GetProfileByIdAsync(user.CurrentProfileId);
     ViewData["Title"] = $"{Model.Username}'s profile.";
 }
 
@@ -16,25 +16,25 @@
 <div class="row">
     <div class="col-md-4 offset-md-4">
         <section>
-             <div class="text-center"><h2>@Model.FullName</h2></div>
+            <div class="text-center"><h2>@Model.FullName</h2></div>
             <div class="col-md-6 offset-4">
-               <a><img src=@Model.PictureUr height="120" /></a>
-                
+                <a><img src=@Model.PictureUr height="120" /></a>
+
             </div>
             <div class="text-center"><h2>@Model.Bio</h2></div>
-                </div>
-    @if (userId == Model.Id)
+    </div>
+    @if (profile.Id == Model.Id)
     {
         <div class="text-center">
-            <a asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Edit" class="btn btn-warning" role="button">Edit</a>
-            </div>
-    }
-    @if (await UserManager.IsInRoleAsync(user,"Admin") || userId == Model.Id)
-    { 
-        <div class="text-center">
-        <a asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Delete" class="btn btn-danger" role="button">Delete</a>
+            <a asp-area="" asp-controller="User" asp-route-id="@profile.Id" asp-action="Edit" class="btn btn-warning" role="button">Edit</a>
         </div>
     }
-        </section>
-    </div>
+    @if (profile.IsAdmin == true || profile.Id == Model.Id)
+    {
+        <div class="text-center">
+            <a asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Delete" class="btn btn-danger" role="button">Delete</a>
+        </div>
+    }
+    </section>
+</div>
 </div>

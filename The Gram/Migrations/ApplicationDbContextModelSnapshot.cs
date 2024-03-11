@@ -234,11 +234,8 @@ namespace TheGram.Migrations
 
             modelBuilder.Entity("The_Gram.Data.Models.BecomeAdminApplication", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ApplicantId")
                         .IsRequired()
@@ -254,11 +251,12 @@ namespace TheGram.Migrations
 
             modelBuilder.Entity("The_Gram.Data.Models.Content", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -268,26 +266,27 @@ namespace TheGram.Migrations
                     b.Property<int>("TotalLikes")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Content");
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Content");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("The_Gram.Data.Models.Image", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ContentId")
-                        .HasColumnType("int");
+                    b.Property<string>("ContentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("URL")
                         .IsRequired()
@@ -300,16 +299,90 @@ namespace TheGram.Migrations
                     b.ToTable("Images", (string)null);
                 });
 
+            modelBuilder.Entity("The_Gram.Data.Models.PostComment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CommenterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostCommentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommenterId");
+
+                    b.HasIndex("PostCommentId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostComments");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.ProfileFollowerMapping", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FollowerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProfileId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("ProfileFollowerMappings");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.ProfileFriendMapping", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FriendId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProfileId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("Timestamp")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FriendId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("ProfileFriendMappings");
+                });
+
             modelBuilder.Entity("The_Gram.Data.Models.Reaction", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ContentId")
-                        .HasColumnType("int");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -317,31 +390,17 @@ namespace TheGram.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContentId");
+                    b.ToTable("Reactions");
 
-                    b.HasIndex("UserId");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Reaction");
 
-                    b.ToTable("Reactions", (string)null);
+                    b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("UserUser", b =>
+            modelBuilder.Entity("The_Gram.Data.Models.UserProfile", b =>
                 {
-                    b.Property<string>("FollowersId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FriendsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("FollowersId", "FriendsId");
-
-                    b.HasIndex("FriendsId");
-
-                    b.ToTable("UserUser");
-                });
-
-            modelBuilder.Entity("The_Gram.Data.Models.User", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<string>("Bio")
                         .IsRequired()
@@ -352,21 +411,74 @@ namespace TheGram.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Picture")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserProfiles");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("CurrentProfileId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("CurrentProfileId")
+                        .IsUnique()
+                        .HasFilter("[CurrentProfileId] IS NOT NULL");
+
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("The_Gram.Data.Models.Comment", b =>
+            modelBuilder.Entity("The_Gram.Data.Models.Post", b =>
                 {
                     b.HasBaseType("The_Gram.Data.Models.Content");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.HasIndex("UserId");
 
-                    b.Property<string>("UserId")
+                    b.HasDiscriminator().HasValue("Post");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.PostCommentReaction", b =>
+                {
+                    b.HasBaseType("The_Gram.Data.Models.Reaction");
+
+                    b.Property<string>("CommentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasDiscriminator().HasValue("PostCommentReaction");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.The_Gram.Data.Models.PostReaction", b =>
+                {
+                    b.HasBaseType("The_Gram.Data.Models.Reaction");
+
+                    b.Property<string>("PostId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -374,39 +486,9 @@ namespace TheGram.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
-                });
+                    b.ToTable("Reactions", (string)null);
 
-            modelBuilder.Entity("The_Gram.Data.Models.Message", b =>
-                {
-                    b.HasBaseType("The_Gram.Data.Models.Content");
-
-                    b.Property<string>("RecieverId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("RecieverId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Messages", (string)null);
-                });
-
-            modelBuilder.Entity("The_Gram.Data.Models.Post", b =>
-                {
-                    b.HasBaseType("The_Gram.Data.Models.Content");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Posts", (string)null);
+                    b.HasDiscriminator().HasValue("PostReaction");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -462,7 +544,7 @@ namespace TheGram.Migrations
 
             modelBuilder.Entity("The_Gram.Data.Models.BecomeAdminApplication", b =>
                 {
-                    b.HasOne("The_Gram.Data.Models.User", "Applicant")
+                    b.HasOne("The_Gram.Data.Models.UserProfile", "Applicant")
                         .WithOne("AdminApplication")
                         .HasForeignKey("The_Gram.Data.Models.BecomeAdminApplication", "ApplicantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -482,47 +564,17 @@ namespace TheGram.Migrations
                     b.Navigation("Content");
                 });
 
-            modelBuilder.Entity("The_Gram.Data.Models.Reaction", b =>
+            modelBuilder.Entity("The_Gram.Data.Models.PostComment", b =>
                 {
-                    b.HasOne("The_Gram.Data.Models.Content", "Content")
-                        .WithMany("Reactions")
-                        .HasForeignKey("ContentId")
+                    b.HasOne("The_Gram.Data.Models.UserProfile", "Commenter")
+                        .WithMany("Comments")
+                        .HasForeignKey("CommenterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("The_Gram.Data.Models.User", "User")
-                        .WithMany("Reactions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Content");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UserUser", b =>
-                {
-                    b.HasOne("The_Gram.Data.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("FollowersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("The_Gram.Data.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("FriendsId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("The_Gram.Data.Models.Comment", b =>
-                {
-                    b.HasOne("The_Gram.Data.Models.Content", null)
-                        .WithOne()
-                        .HasForeignKey("The_Gram.Data.Models.Comment", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("The_Gram.Data.Models.PostComment", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("PostCommentId");
 
                     b.HasOne("The_Gram.Data.Models.Post", "Post")
                         .WithMany("Comments")
@@ -530,55 +582,100 @@ namespace TheGram.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("The_Gram.Data.Models.User", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Commenter");
 
                     b.Navigation("Post");
-
-                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("The_Gram.Data.Models.Message", b =>
+            modelBuilder.Entity("The_Gram.Data.Models.ProfileFollowerMapping", b =>
                 {
-                    b.HasOne("The_Gram.Data.Models.Content", null)
-                        .WithOne()
-                        .HasForeignKey("The_Gram.Data.Models.Message", "Id")
+                    b.HasOne("The_Gram.Data.Models.UserProfile", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("The_Gram.Data.Models.User", "Reciever")
-                        .WithMany("RecievedMessages")
-                        .HasForeignKey("RecieverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("The_Gram.Data.Models.UserProfile", "Profile")
+                        .WithMany("Followers")
+                        .HasForeignKey("ProfileId");
 
-                    b.HasOne("The_Gram.Data.Models.User", "User")
-                        .WithMany("SentMessages")
-                        .HasForeignKey("UserId")
+                    b.Navigation("Follower");
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.ProfileFriendMapping", b =>
+                {
+                    b.HasOne("The_Gram.Data.Models.UserProfile", "Friend")
+                        .WithMany()
+                        .HasForeignKey("FriendId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Reciever");
+                    b.HasOne("The_Gram.Data.Models.UserProfile", "Profile")
+                        .WithMany("Friends")
+                        .HasForeignKey("ProfileId");
 
-                    b.Navigation("User");
+                    b.Navigation("Friend");
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.User", b =>
+                {
+                    b.HasOne("The_Gram.Data.Models.UserProfile", "CurrentProfile")
+                        .WithOne("User")
+                        .HasForeignKey("The_Gram.Data.Models.User", "CurrentProfileId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.Navigation("CurrentProfile");
                 });
 
             modelBuilder.Entity("The_Gram.Data.Models.Post", b =>
                 {
-                    b.HasOne("The_Gram.Data.Models.Content", null)
-                        .WithOne()
-                        .HasForeignKey("The_Gram.Data.Models.Post", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("The_Gram.Data.Models.User", "User")
+                    b.HasOne("The_Gram.Data.Models.UserProfile", null)
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.PostCommentReaction", b =>
+                {
+                    b.HasOne("The_Gram.Data.Models.PostComment", "Comment")
+                        .WithMany("Reactions")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("The_Gram.Data.Models.UserProfile", "User")
+                        .WithMany("PostCommentReactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.The_Gram.Data.Models.PostReaction", b =>
+                {
+                    b.HasOne("The_Gram.Data.Models.Post", "Post")
+                        .WithMany("Reactions")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("The_Gram.Data.Models.UserProfile", "User")
+                        .WithMany("Reactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Reactions_UserProfiles_UserId1");
+
+                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });
@@ -586,29 +683,41 @@ namespace TheGram.Migrations
             modelBuilder.Entity("The_Gram.Data.Models.Content", b =>
                 {
                     b.Navigation("Images");
-
-                    b.Navigation("Reactions");
                 });
 
-            modelBuilder.Entity("The_Gram.Data.Models.User", b =>
+            modelBuilder.Entity("The_Gram.Data.Models.PostComment", b =>
+                {
+                    b.Navigation("Reactions");
+
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("The_Gram.Data.Models.UserProfile", b =>
                 {
                     b.Navigation("AdminApplication")
                         .IsRequired();
 
                     b.Navigation("Comments");
 
+                    b.Navigation("Followers");
+
+                    b.Navigation("Friends");
+
+                    b.Navigation("PostCommentReactions");
+
                     b.Navigation("Posts");
 
                     b.Navigation("Reactions");
 
-                    b.Navigation("RecievedMessages");
-
-                    b.Navigation("SentMessages");
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("The_Gram.Data.Models.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Reactions");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,41 @@
+﻿@using The_Gram.Models.Post;
+@model PostViewModel
+@{
+    ViewBag.Title = $"{@Model.PostCaption}";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-center mb-3">
+    <a class="btn btn-dark" asp-action="PrevImage" asp-controller="Post" asp-route-postId="@Model.Id" asp-route-currentImageIndex="@Model.CurrentImageIndex"> < </a>
+    <img src="@Model.Images[@Model.CurrentImageIndex].URL" alt="Post Image" />
+    <a class="btn btn-dark" asp-action="NextImage" asp-controller="Post" asp-route-postid="@Model.Id" asp-route-currentImageIndex="@Model.CurrentImageIndex"> > </a>
+</div>
+
+<div class="text-center mb-3">
+    Likes: @Model.Likes.Count()
+</div>
+<br />
+<div class="text-center mb-3">
+    <a class="btn btn-secondary" asp-controller="Post" asp-action="Like" asp-route-postId="@Model.Id" asp-route-currentImageIndex="@Model.CurrentImageIndex">Like</a>
+</div>
+<br />
+<div class="text-center mb-3">
+    <form asp-controller="Post" asp-action="AddComment" asp-route-Id="@Model.Id" asp-route-currentImageIndex="@Model.CurrentImageIndex" method="post">
+        <input type="hidden" name="postId" value="@Model.PostId" />
+        <input class="form-control" name="commentText" />
+        <button class="btn btn-success" type="submit">Comment</button>
+    </form>
+</div>
+
+<div>
+    <h3>Comments</h3>
+    @foreach (var comment in Model.PostComments)
+    {
+        <div>@comment.Commenter.Username: @comment.Content</div>
+    }
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -6,11 +6,11 @@ namespace The_Gram.Data.Models
     public class Image
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         [Required]
         public string URL { get; set; }
         public Content Content { get; set; }
         [Required]
-        public int ContentId { get; set; }
+        public string ContentId { get; set; }
     }
 }
