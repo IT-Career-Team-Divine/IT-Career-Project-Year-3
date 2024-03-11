@@ -25,14 +25,20 @@ namespace The_Gram.Controllers
             this.emailSender = emailSender;
         }
         [HttpGet]
-        [Authorize(Roles = "User")]
         public async Task<IActionResult> Become()
         {
+            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var currentProfile = await userService.GetProfileByIdAsync(currentUser.CurrentProfileId);
+            if (currentProfile.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+
+            }
+
             BecomeAdminApplicationViewModel model1 = new BecomeAdminApplicationViewModel();
             return View(model1);
         }
         [HttpPost]
-        [Authorize(Roles = "User")]
         public async Task<IActionResult> Become(BecomeAdminApplicationViewModel model)
         {
             if (!ModelState.IsValid)
@@ -41,8 +47,9 @@ namespace The_Gram.Controllers
 
             }
             var currentUser = await userManager.GetUserAsync(HttpContext.User);
+           
             var result = await adminService.MakeAdminApplicationAsync(model, currentUser);
-            if (result == null)
+            if (result == false)
             {
                 return View(model);
             }

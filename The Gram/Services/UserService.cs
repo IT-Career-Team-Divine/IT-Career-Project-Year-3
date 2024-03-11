@@ -196,5 +196,142 @@ namespace The_Gram.Services
             return profile;
         }
 
+        public async Task<bool> FriendRequestSent(string id, string friendId)
+        {
+            var output = false;
+            var isRequestSentFromUserToFriend = await context.ProfileFriendMappings.Where(fr => fr.Profile.Id== id && fr.Friend.Id == friendId).AnyAsync();
+          
+             if (isRequestSentFromUserToFriend == true)
+            {
+                output = isRequestSentFromUserToFriend;
+            }
+            return output;
+        }
+
+        public async Task<bool> IsFriend(string friendId, string id)
+        {
+            var isRequestSentFromUserToFriend = await context.ProfileFriendMappings.Where(fr => fr.Profile.Id == id && fr.Friend.Id == friendId && fr.isAccepted == true).AnyAsync();
+            var isRequestSentFromFriendToUser = await context.ProfileFriendMappings.Where(fr => fr.Profile.Id == friendId && fr.Friend.Id == id && fr.isAccepted == true).AnyAsync();
+            if (isRequestSentFromFriendToUser || isRequestSentFromUserToFriend)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<List<AllUsersViewModel>> Search(string query)
+        {
+            var result = context.UserProfiles.Where(u => u.Username.Contains(query) == true).ToList();
+            var users = new List<AllUsersViewModel>();
+            foreach (var user in result)
+            {
+                var allProfileViewModel = new AllUsersViewModel()
+                {
+                    Username= user.Username,
+                    Id= user.Id,
+                    Picture = user.Picture,
+                };
+                users.Add(allProfileViewModel);
+            }
+            return users;
+        }
+
+        public async Task<bool> SendFriendRequest(string id, string friendId)
+        {
+            var userProfiile = await GetProfileByIdAsync(id);
+            var friendProfile = await GetProfileByIdAsync(friendId);
+            if (userProfiile == null || friendProfile == null) 
+            {
+                return false;
+            }
+            ProfileFriendMapping mapping = new ProfileFriendMapping()
+            {
+                Friend = friendProfile,
+                Profile = userProfiile
+            };
+           await context.ProfileFriendMappings.AddAsync(mapping);
+           await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> CancelFriendRequest(string id, string modelId)
+        {
+            var mapping = await context.ProfileFriendMappings.FirstOrDefaultAsync(pfr => pfr.Friend.Id == modelId  && pfr.Profile.Id == id);
+            if (mapping == null)
+            {
+                return false;
+            }
+            context.ProfileFriendMappings.Remove(mapping);
+           await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> AcceptFreindRequest(string modelId, string id)
+        {
+            var mapping = await context.ProfileFriendMappings.FirstOrDefaultAsync(pfr => pfr.Profile.Id == modelId && pfr.Friend.Id == id);
+            if (mapping == null)
+            {
+                return false;
+            }
+           await Unfollow(modelId, id);
+            mapping.isAccepted = true;
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> Follows(string friendId, string id)
+        {
+           var follows = await context.ProfileFollowerMappings.Where(pfm => pfm.Follower.Id == friendId && pfm.Profile.Id == id).AnyAsync();
+            return follows;
+        }
+
+        public async Task<bool> Follow(string modelId, string id)
+        {
+            var follower = await GetProfileByIdAsync(id);
+            var profile = await GetProfileByIdAsync(modelId);
+            ProfileFollowerMapping profileFollowerMapping = new ProfileFollowerMapping()
+            {
+                Follower = follower,
+                Profile = profile,
+            };
+          await  context.ProfileFollowerMappings.AddAsync(profileFollowerMapping);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> Unfollow(string modelId, string id)
+        {
+            var follower = await GetProfileByIdAsync(id);
+            var profile = await GetProfileByIdAsync(modelId);
+            if (follower == null || profile == null)
+            {
+                return false;
+            }
+            var mapping = await context.ProfileFollowerMappings.FirstOrDefaultAsync(pfm => pfm.ProfileId == modelId && pfm.FollowerId == id);
+            if (mapping == null)
+            {
+                return false;
+            }
+            context.ProfileFollowerMappings.Remove(mapping);
+           await context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> Defriend(string modelId, string id)
+        {
+            var friend = await GetProfileByIdAsync(modelId);
+            var profile = await GetProfileByIdAsync(id);
+            if (friend == null || profile == null)
+            {
+                return false;
+            }
+            var mapping = await context.ProfileFriendMappings.FirstOrDefaultAsync(pfm => pfm.ProfileId == modelId && pfm.FriendId == id);
+            if (mapping == null)
+            {
+                return false;
+            }
+            context.ProfileFriendMappings.Remove(mapping);
+            await context.SaveChangesAsync();
+            return true;
+        }
     }
 }

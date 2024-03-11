@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TheGram.Migrations
 {
     /// <inheritdoc />
-    public partial class CascadeMigration : Migration
+    public partial class InitalMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -137,52 +137,56 @@ namespace TheGram.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProfileFollowerMapping",
+                name: "ProfileFollowerMappings",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FollowerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProfileId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    FollowerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProfileId1 = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProfileId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfileFollowerMapping", x => x.Id);
+                    table.PrimaryKey("PK_ProfileFollowerMappings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProfileFollowerMapping_UserProfiles_FollowerId",
-                        column: x => x.FollowerId,
+                        name: "FK_ProfileFollowerMappings_UserProfiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProfileFollowerMappings_UserProfiles_ProfileId1",
+                        column: x => x.ProfileId1,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProfileFollowerMapping_UserProfiles_ProfileId",
-                        column: x => x.ProfileId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProfileFriendMapping",
+                name: "ProfileFriendMappings",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Timestamp = table.Column<long>(type: "bigint", nullable: false),
-                    ProfileId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    FriendId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ProfileId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FriendId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    isAccepted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfileFriendMapping", x => x.Id);
+                    table.PrimaryKey("PK_ProfileFriendMappings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProfileFriendMapping_UserProfiles_FriendId",
+                        name: "FK_ProfileFriendMappings_UserProfiles_FriendId",
                         column: x => x.FriendId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProfileFriendMapping_UserProfiles_ProfileId",
+                        name: "FK_ProfileFriendMappings_UserProfiles_ProfileId",
                         column: x => x.ProfileId,
                         principalTable: "UserProfiles",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -438,23 +442,23 @@ namespace TheGram.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfileFollowerMapping_FollowerId",
-                table: "ProfileFollowerMapping",
-                column: "FollowerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProfileFollowerMapping_ProfileId",
-                table: "ProfileFollowerMapping",
+                name: "IX_ProfileFollowerMappings_ProfileId",
+                table: "ProfileFollowerMappings",
                 column: "ProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfileFriendMapping_FriendId",
-                table: "ProfileFriendMapping",
+                name: "IX_ProfileFollowerMappings_ProfileId1",
+                table: "ProfileFollowerMappings",
+                column: "ProfileId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProfileFriendMappings_FriendId",
+                table: "ProfileFriendMappings",
                 column: "FriendId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfileFriendMapping_ProfileId",
-                table: "ProfileFriendMapping",
+                name: "IX_ProfileFriendMappings_ProfileId",
+                table: "ProfileFriendMappings",
                 column: "ProfileId");
 
             migrationBuilder.CreateIndex(
@@ -498,10 +502,10 @@ namespace TheGram.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
-                name: "ProfileFollowerMapping");
+                name: "ProfileFollowerMappings");
 
             migrationBuilder.DropTable(
-                name: "ProfileFriendMapping");
+                name: "ProfileFriendMappings");
 
             migrationBuilder.DropTable(
                 name: "Reactions");

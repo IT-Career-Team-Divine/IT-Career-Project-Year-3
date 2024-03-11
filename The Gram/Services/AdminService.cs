@@ -10,10 +10,12 @@ namespace The_Gram.Services
     {
         private readonly ApplicationDbContext context;
         private readonly UserManager<User> userManager;
-        public AdminService(ApplicationDbContext dbContext, UserManager<User> manager)
+        private readonly IUserService userService;
+        public AdminService(ApplicationDbContext dbContext, UserManager<User> manager, IUserService userService)
         {
             this.context = dbContext;
             this.userManager = manager;
+            this.userService = userService;
 
         }
 
@@ -56,12 +58,16 @@ namespace The_Gram.Services
             {
 
                 var application = await context.adminApplications.FirstOrDefaultAsync(adp => adp.ApplicantId == profile.Id);
-                var operation = await userManager.AddToRoleAsync(user, "Admin");
-                var remove = await userManager.RemoveFromRoleAsync(user, "User");
+               
                 var deleteAplication = context.adminApplications.Remove(application);
-                if (operation.Succeeded && remove.Succeeded)
+                if (await userManager.IsInRoleAsync(user, "Admin") == false)
                 {
-                    output = true;
+                    var operation = await userManager.AddToRoleAsync(user, "Admin");
+                    var remove = await userManager.RemoveFromRoleAsync(user, "User");
+                    if (operation.Succeeded && remove.Succeeded)
+                    {
+                        output = true;
+                    }
                 }
             }
             profile.IsAdmin = output;
@@ -73,15 +79,28 @@ namespace The_Gram.Services
         public async Task<bool> MakeAdminApplicationAsync(BecomeAdminApplicationViewModel aplicationModel, User currentUser)
         {
             bool output = false;
-            UserProfile user = await context.UserProfiles.FirstOrDefaultAsync(up => up.Username == aplicationModel.Username);
-            if (user.UserId != currentUser.Id)
+            if (aplicationModel == null || currentUser == null)
+            {
+                return output;
+            }
+            User user = await userService.GetByEmailAsync(aplicationModel.Email);
+            if (user == null)
+            {
+                return output;
+            }
+            var profile = await userService.GetByUsernameAsync(aplicationModel.Username);
+            if (profile == null)
+            {
+                return output;
+            }
+            if (profile.Id != user.CurrentProfileId)
             {
                 return output;
             }
             var application = new BecomeAdminApplication()
             {
-                Applicant = user,
-                ApplicantId = user.Id,
+                Applicant = profile,
+                ApplicantId = profile.Id,
             };
             var operation = await context.adminApplications.AddAsync(application);
             if (context.SaveChangesAsync().Result > 0 && operation != null)

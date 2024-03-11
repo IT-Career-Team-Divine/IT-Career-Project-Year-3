@@ -195,7 +195,9 @@ namespace The_Gram.Servicest
            
             foreach (var leftPost in allPosts)
             {
-                if (followingPosts.IndexOf(leftPost) == null && friendPosts.IndexOf(leftPost) == null && mine.IndexOf(leftPost) == null)
+                var isFriendPost = friendPosts.Find(p => p.Id == leftPost.Id);
+                var isFollowingPost = followingPosts.Find(p => p.Id == leftPost.Id);
+                if (isFollowingPost == null && isFriendPost == null)
                 {
                     feed.Add(leftPost);
                 }
@@ -213,6 +215,7 @@ namespace The_Gram.Servicest
                 var images = await GetPostImages(myPost.Id);
                 var postViewModel = new AllPostsViewModel()
                 {
+                    Id = myPost.Id,
                     Author = profile.Username,
                     Description = myPost.Text,
                     Images = images
@@ -228,13 +231,14 @@ namespace The_Gram.Servicest
             var followMaps = await context.ProfileFollowerMappings.Where(pfm => pfm.Follower.Id == id).ToListAsync();
             foreach (var followerMap in followMaps)
             {
-                var following = await userService.GetProfileByIdAsync(followerMap.Profile.Id);
+                var following = await userService.GetProfileByIdAsync(followerMap.ProfileId);
                 var posts = await context.Posts.Where(i => i.UserId == following.Id).ToListAsync();
                 foreach (var post in posts)
                 {
                     var images = await this.GetPostImages(post.Id);
                     AllPostsViewModel model = new AllPostsViewModel()
                     {
+                        Id = post.Id,
                         Author = following.Username,
                         Description = post.Text,
                         Images = images,
@@ -250,7 +254,7 @@ namespace The_Gram.Servicest
         public async Task<List<AllPostsViewModel>> GetFriendPosts(string id)
         {
             var friendPosts = new List<AllPostsViewModel>();
-            var friendMaps = await context.ProfileFriendMappings.Where(pfm => pfm.Profile.Id == id).ToListAsync();
+            var friendMaps = await context.ProfileFriendMappings.Where(pfm => pfm.Profile.Id == id && pfm.isAccepted==true).ToListAsync();
             foreach (var friendMap in friendMaps)
             {
                 var friend = await userService.GetProfileByIdAsync(friendMap.Friend.Id);
@@ -260,6 +264,7 @@ namespace The_Gram.Servicest
                     var images = await this.GetPostImages(post.Id);
                     AllPostsViewModel model = new AllPostsViewModel()
                     {
+                        Id = post.Id,
                         Author = friend.Username,
                         Description = post.Text,
                         Images = images,

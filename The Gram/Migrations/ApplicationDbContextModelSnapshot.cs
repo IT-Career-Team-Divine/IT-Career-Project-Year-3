@@ -337,16 +337,21 @@ namespace TheGram.Migrations
 
                     b.Property<string>("FollowerId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProfileId1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FollowerId");
-
                     b.HasIndex("ProfileId");
+
+                    b.HasIndex("ProfileId1");
 
                     b.ToTable("ProfileFollowerMappings");
                 });
@@ -361,10 +366,14 @@ namespace TheGram.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProfileId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<long>("Timestamp")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("isAccepted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -590,14 +599,16 @@ namespace TheGram.Migrations
             modelBuilder.Entity("The_Gram.Data.Models.ProfileFollowerMapping", b =>
                 {
                     b.HasOne("The_Gram.Data.Models.UserProfile", "Follower")
-                        .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("Followers")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("The_Gram.Data.Models.UserProfile", "Profile")
-                        .WithMany("Followers")
-                        .HasForeignKey("ProfileId");
+                        .WithMany("Following")
+                        .HasForeignKey("ProfileId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Follower");
 
@@ -607,14 +618,16 @@ namespace TheGram.Migrations
             modelBuilder.Entity("The_Gram.Data.Models.ProfileFriendMapping", b =>
                 {
                     b.HasOne("The_Gram.Data.Models.UserProfile", "Friend")
-                        .WithMany()
+                        .WithMany("Friends")
                         .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("The_Gram.Data.Models.UserProfile", "Profile")
-                        .WithMany("Friends")
-                        .HasForeignKey("ProfileId");
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Friend");
 
@@ -700,6 +713,8 @@ namespace TheGram.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Followers");
+
+                    b.Navigation("Following");
 
                     b.Navigation("Friends");
 

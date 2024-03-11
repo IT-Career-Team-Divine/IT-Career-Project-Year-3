@@ -36,6 +36,7 @@ namespace The_Gram.Data.Models
         public List<PostComment> Comments { get; set; }
         public List<ProfileFriendMapping> Friends { get; set; }
         public List<ProfileFollowerMapping> Followers { get; set; }
+        public List<ProfileFollowerMapping> Following { get; set; }
         public List<PostReaction> Reactions { get; set; }
         public List<PostCommentReaction> PostCommentReactions { get; set; }
         public BecomeAdminApplication AdminApplication { get; set; }

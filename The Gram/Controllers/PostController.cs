@@ -13,11 +13,13 @@ namespace The_Gram.Controllers
         private readonly IPostService postService;
         private readonly IUserService userService;
         private readonly UserManager<User> userManager;
-        public PostController(IPostService _postService, IUserService _userService, UserManager<User> _userManager)
+        private readonly IAdminService adminService;
+        public PostController(IPostService _postService, IUserService _userService, UserManager<User> _userManager, IAdminService _adminService)
         {
             postService = _postService;
             userService = _userService;
             userManager = _userManager;
+            adminService = _adminService;
         }
         [Authorize]
         [HttpGet]
@@ -61,19 +63,19 @@ namespace The_Gram.Controllers
             return View(post);
         }
         [HttpGet]
-        public async Task<IActionResult> PrevImage(string postId, int currentImageIndex)
+        public async Task<IActionResult> PrevImage(string thisPostId, int currentImageIndex)
         {
             int prevIndex = 0;
-            var post = await postService.GetByIdAsync(postId);
+            var post = await postService.GetByIdAsync(thisPostId);
 
             if (post == null)
             {
                 return NotFound();
             }
 
-            var images = await postService.GetPostImages(postId);
-            var likes = await postService.GetPostLikes(postId);
-            var comments = await postService.getPostComments(postId);
+            var images = await postService.GetPostImages(thisPostId);
+            var likes = await postService.GetPostLikes(thisPostId);
+            var comments = await postService.getPostComments(thisPostId);
 
             if (currentImageIndex > 0)
             {
@@ -91,19 +93,19 @@ namespace The_Gram.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> NextImage(string postId, int currentImageIndex)
+        public async Task<IActionResult> NextImage(string thisPostId, int currentImageIndex)
         {
             int nextIndex = 0;
-            var post = await postService.GetByIdAsync(postId);
+            var post = await postService.GetByIdAsync(thisPostId);
 
             if (post == null)
             {
                 return NotFound();
             }
 
-            var images = await postService.GetPostImages(postId);
-            var likes = await postService.GetPostLikes(postId);
-            var comments = await postService.getPostComments(postId);
+            var images = await postService.GetPostImages(thisPostId);
+            var likes = await postService.GetPostLikes(thisPostId);
+            var comments = await postService.getPostComments(thisPostId);
 
             if (currentImageIndex != images.Count - 1)
             {
@@ -116,16 +118,16 @@ namespace The_Gram.Controllers
         }
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Like(string postId, int currentImageIndex)
+        public async Task<IActionResult> Like(string thisPostId, int currentImageIndex)
         {
-            var post = await postService.GetByIdAsync(postId);
+            var post = await postService.GetByIdAsync(thisPostId);
             var user = await userService.GetProfileByIdAsync(post.UserId);
-            var images = await postService.GetPostImages(postId);
-            var comments = await postService.getPostComments(postId);
+            var images = await postService.GetPostImages(thisPostId);
+            var comments = await postService.getPostComments(thisPostId);
 
             await postService.Like(post, user);
 
-            var likes = await postService.GetPostLikes(postId);
+            var likes = await postService.GetPostLikes(thisPostId);
 
             return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, PostComments = post.Comments, Id = post.Id, CurrentImageIndex = currentImageIndex });
 
@@ -133,20 +135,66 @@ namespace The_Gram.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddComment(string postId, int currentImageIndex, string commentText)
+        public async Task<IActionResult> AddComment(string thisPostId, int currentImageIndex, string currentProfileId, string commentText)
         {
-            var post = await postService.GetByIdAsync(postId);
-            var user = await userService.GetProfileByIdAsync(post.UserId);
-            var images = await postService.GetPostImages(postId);
-            var likes = await postService.GetPostLikes(postId);
+            var post = await postService.GetByIdAsync(thisPostId);
+            var user = await userService.GetProfileByIdAsync(currentProfileId);
+            var images = await postService.GetPostImages(thisPostId);
+            var likes = await postService.GetPostLikes(thisPostId);
 
             await postService.Comment(post, user, commentText);
-            List<PostComment> comments = await postService.getPostComments(postId);
+            List<PostComment> comments = await postService.getPostComments(thisPostId);
 
             return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, PostComments = comments, Id = post.Id, CurrentImageIndex = currentImageIndex });
 
 
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(string id, string currentProfileId)
+        {
+            var post = await postService.GetByIdAsync(id);
+            var profile = await userService.GetProfileByIdAsync(currentProfileId);
 
+            var user = await userService.GetByIdAsync(profile.UserId);
+            var currentUser = await userManager.GetUserAsync(HttpContext.User);
+            var userIsAdmin = await adminService.IsAdminAsync(user, profile);
+
+            if (currentUser.Id != profile.UserId && !userIsAdmin)
+            {
+                return RedirectToAction("Become", "Admin");
+            }
+            var images =  await postService.GetPostImages(id);
+            var postCreationView = new PostViewModel()
+            {
+                Id = id,
+                PostCaption =post.Text,
+            };
+            return View(postCreationView);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(string id, UserAccountViewModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+
+            var edited = await this.userService.Edit(
+                id,
+                model.FullName,
+                model.PictureUr,
+                model.Bio,
+                model.Username);
+            if (!edited)
+            {
+                return BadRequest();
+            }
+            return Redirect($"~/User/Account/{id}");
+        }
     }
 }
