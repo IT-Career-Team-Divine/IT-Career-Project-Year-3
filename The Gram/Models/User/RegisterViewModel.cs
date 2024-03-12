@@ -35,6 +35,7 @@ namespace The_Gram.Models.User
         public string ConfirmPassword { get; set; } = null!;
         [Required]
         public bool IsPrivate { get; set; } = false;
+        public bool AcceptTermsAndConditions { get; set; }
 
     }
 }

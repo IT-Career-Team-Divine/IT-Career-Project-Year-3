@@ -53,12 +53,34 @@
                 <input id="IsPrivate" name="IsPrivate" type="checkbox" value="true" @(Model.IsPrivate ? "checked" : "") />
                 <span asp-validation-for="@Model.IsPrivate" class="text-danger"></span>
             </div>
+            <div class="form-check">
+                <input asp-for="@Model.AcceptTermsAndConditions" class="form-check-input" />
+                <label class="form-check-label" for="AcceptTermsAndConditions">I accept the terms and conditions</label>
+                <span asp-validation-for="@Model.AcceptTermsAndConditions" class="text-danger"></span>
+            </div>
             <div class="text-center">
                 <button id="registerSubmit" type="submit" class="btn btn-primary">Register</button>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("AcceptTermsAndConditions").addEventListener("change", function () {
+            document.getElementById("termsError").innerText = "";
+        });
+    });
+
+    function validateForm() {
+        var termsCheckbox = document.getElementById("AcceptTermsAndConditions");
+        if (!termsCheckbox.checked) {
+            document.getElementById("termsError").innerText = "You must accept the terms and conditions.";
+            return false;
+        }
+        return true;
+    }
+</script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

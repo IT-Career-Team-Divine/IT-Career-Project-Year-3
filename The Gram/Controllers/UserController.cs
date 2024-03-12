@@ -65,6 +65,10 @@ namespace The_Gram.Controllers
             {
                 ModelState.AddModelError("", "Username is taken, please choose another");
             }
+            if (!model.AcceptTermsAndConditions)
+            {
+                ModelState.AddModelError("AcceptTermsAndConditions", "You must accept the terms and conditions.");
+            }
             if (ModelState.ErrorCount != 0)
             {
                 return View(model);
