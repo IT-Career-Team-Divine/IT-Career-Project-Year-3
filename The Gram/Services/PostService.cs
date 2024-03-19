@@ -231,7 +231,7 @@ namespace The_Gram.Servicest
             var followMaps = await context.ProfileFollowerMappings.Where(pfm => pfm.Follower.Id == id).ToListAsync();
             foreach (var followerMap in followMaps)
             {
-                var following = await userService.GetProfileByIdAsync(followerMap.ProfileId);
+                var following = await userService.GetProfileByIdAsync(followerMap.FollowingId);
                 var posts = await context.Posts.Where(i => i.UserId == following.Id).ToListAsync();
                 foreach (var post in posts)
                 {
@@ -254,7 +254,7 @@ namespace The_Gram.Servicest
         public async Task<List<AllPostsViewModel>> GetFriendPosts(string id)
         {
             var friendPosts = new List<AllPostsViewModel>();
-            var friendMaps = await context.ProfileFriendMappings.Where(pfm => pfm.Profile.Id == id && pfm.isAccepted==true).ToListAsync();
+            var friendMaps = await context.ProfileFriendMappings.Where(pfm => pfm.FriendId == id && pfm.isAccepted==true).ToListAsync();
             foreach (var friendMap in friendMaps)
             {
                 var friend = await userService.GetProfileByIdAsync(friendMap.Friend.Id);

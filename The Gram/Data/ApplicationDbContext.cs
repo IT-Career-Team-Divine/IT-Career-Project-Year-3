@@ -35,9 +35,10 @@ namespace The_Gram.Data
             builder.Entity<UserProfile>().HasMany(up => up.Comments).WithOne(pc => pc.Commenter);
             builder.Entity<Image>().ToTable("Images").HasOne(i => i.Content).WithMany(c => c.Images).HasForeignKey(i => i.ContentId).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<BecomeAdminApplication>().ToTable("AdminApplications").HasOne(ada => ada.Applicant).WithOne(a=> a.AdminApplication).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<ProfileFollowerMapping>().HasOne(pfm => pfm.Follower).WithMany(f => f.Followers).HasForeignKey(p => p.ProfileId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<ProfileFriendMapping>().HasOne(pfm => pfm.Friend).WithMany(f => f.Friends).HasForeignKey(p => p.ProfileId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<ProfileFriendMapping>().HasOne(pfm => pfm.Friend).WithMany(f => f.Friends).HasForeignKey(p => p.FriendId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<UserProfile>().HasMany(up => up.Followers).WithOne(f => f.Following).HasForeignKey(p => p.FollowingId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<UserProfile>().HasMany(up => up.Following).WithOne(f => f.Follower).HasForeignKey(p => p.FollowerId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<UserProfile>().HasMany(up => up.FriendsTo).WithOne(f => f.User).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<UserProfile>().HasMany(up => up.FriendsFrom).WithOne(f => f.Friend).HasForeignKey(p => p.FriendId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<User>().HasOne(u => u.CurrentProfile).WithOne(cp => cp.User).OnDelete(DeleteBehavior.SetNull);
         }
     }

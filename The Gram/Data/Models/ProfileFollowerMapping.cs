@@ -7,8 +7,8 @@ namespace The_Gram.Data.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public UserProfile Follower { get; set; }
         public string FollowerId { get; set; }
-        public UserProfile Profile { get; set; }
-        public string ProfileId { get; set; }
+        public UserProfile Following { get; set; }
+        public string FollowingId { get; set; }
 
     }
 }

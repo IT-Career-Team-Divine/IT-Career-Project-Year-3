@@ -199,7 +199,7 @@ namespace The_Gram.Services
         public async Task<bool> FriendRequestSent(string id, string friendId)
         {
             var output = false;
-            var isRequestSentFromUserToFriend = await context.ProfileFriendMappings.Where(fr => fr.Profile.Id== id && fr.Friend.Id == friendId).AnyAsync();
+            var isRequestSentFromUserToFriend = await context.ProfileFriendMappings.Where(fr => fr.UserId== id && fr.Friend.Id == friendId).AnyAsync();
           
              if (isRequestSentFromUserToFriend == true)
             {
@@ -210,8 +210,8 @@ namespace The_Gram.Services
 
         public async Task<bool> IsFriend(string friendId, string id)
         {
-            var isRequestSentFromUserToFriend = await context.ProfileFriendMappings.Where(fr => fr.Profile.Id == id && fr.Friend.Id == friendId && fr.isAccepted == true).AnyAsync();
-            var isRequestSentFromFriendToUser = await context.ProfileFriendMappings.Where(fr => fr.Profile.Id == friendId && fr.Friend.Id == id && fr.isAccepted == true).AnyAsync();
+            var isRequestSentFromUserToFriend = await context.ProfileFriendMappings.Where(fr => fr.UserId == id && fr.Friend.Id == friendId && fr.isAccepted == true).AnyAsync();
+            var isRequestSentFromFriendToUser = await context.ProfileFriendMappings.Where(fr => fr.UserId == friendId && fr.Friend.Id == id && fr.isAccepted == true).AnyAsync();
             if (isRequestSentFromFriendToUser || isRequestSentFromUserToFriend)
             {
                 return true;
@@ -246,8 +246,8 @@ namespace The_Gram.Services
             }
             ProfileFriendMapping mapping = new ProfileFriendMapping()
             {
-                Friend = friendProfile,
-                Profile = userProfiile
+                UserId = id,
+                FriendId = friendId
             };
            await context.ProfileFriendMappings.AddAsync(mapping);
            await context.SaveChangesAsync();
@@ -256,7 +256,7 @@ namespace The_Gram.Services
 
         public async Task<bool> CancelFriendRequest(string id, string modelId)
         {
-            var mapping = await context.ProfileFriendMappings.FirstOrDefaultAsync(pfr => pfr.Friend.Id == modelId  && pfr.Profile.Id == id);
+            var mapping = await context.ProfileFriendMappings.FirstOrDefaultAsync(pfr => pfr.FriendId == modelId  && pfr.UserId == id);
             if (mapping == null)
             {
                 return false;
@@ -268,7 +268,7 @@ namespace The_Gram.Services
 
         public async Task<bool> AcceptFreindRequest(string modelId, string id)
         {
-            var mapping = await context.ProfileFriendMappings.FirstOrDefaultAsync(pfr => pfr.Profile.Id == modelId && pfr.Friend.Id == id);
+            var mapping = await context.ProfileFriendMappings.FirstOrDefaultAsync(pfr => pfr.UserId == modelId && pfr.FriendId == id);
             if (mapping == null)
             {
                 return false;
@@ -281,7 +281,7 @@ namespace The_Gram.Services
 
         public async Task<bool> Follows(string friendId, string id)
         {
-           var follows = await context.ProfileFollowerMappings.Where(pfm => pfm.Follower.Id == friendId && pfm.Profile.Id == id).AnyAsync();
+           var follows = await context.ProfileFollowerMappings.Where(pfm => pfm.Follower.Id == friendId && pfm.FollowingId == id).AnyAsync();
             return follows;
         }
 
@@ -291,8 +291,8 @@ namespace The_Gram.Services
             var profile = await GetProfileByIdAsync(modelId);
             ProfileFollowerMapping profileFollowerMapping = new ProfileFollowerMapping()
             {
-                Follower = follower,
-                Profile = profile,
+                FollowerId = id,
+                FollowingId = modelId,
             };
           await  context.ProfileFollowerMappings.AddAsync(profileFollowerMapping);
             await context.SaveChangesAsync();
@@ -307,7 +307,7 @@ namespace The_Gram.Services
             {
                 return false;
             }
-            var mapping = await context.ProfileFollowerMappings.FirstOrDefaultAsync(pfm => pfm.ProfileId == modelId && pfm.FollowerId == id);
+            var mapping = await context.ProfileFollowerMappings.FirstOrDefaultAsync(pfm => pfm.FollowingId == modelId && pfm.FollowerId == id);
             if (mapping == null)
             {
                 return false;
@@ -324,7 +324,7 @@ namespace The_Gram.Services
             {
                 return false;
             }
-            var mapping = await context.ProfileFriendMappings.FirstOrDefaultAsync(pfm => pfm.ProfileId == modelId && pfm.FriendId == id);
+            var mapping = await context.ProfileFriendMappings.FirstOrDefaultAsync(pfm => pfm.UserId == modelId && pfm.FriendId == id);
             if (mapping == null)
             {
                 return false;

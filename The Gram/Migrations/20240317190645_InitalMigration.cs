@@ -141,25 +141,24 @@ namespace TheGram.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FollowerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfileId1 = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProfileId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    FollowerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FollowingId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProfileFollowerMappings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProfileFollowerMappings_UserProfiles_ProfileId",
-                        column: x => x.ProfileId,
+                        name: "FK_ProfileFollowerMappings_UserProfiles_FollowerId",
+                        column: x => x.FollowerId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProfileFollowerMappings_UserProfiles_ProfileId1",
-                        column: x => x.ProfileId1,
+                        name: "FK_ProfileFollowerMappings_UserProfiles_FollowingId",
+                        column: x => x.FollowingId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,7 +167,7 @@ namespace TheGram.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Timestamp = table.Column<long>(type: "bigint", nullable: false),
-                    ProfileId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FriendId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     isAccepted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -182,11 +181,11 @@ namespace TheGram.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProfileFriendMappings_UserProfiles_ProfileId",
-                        column: x => x.ProfileId,
+                        name: "FK_ProfileFriendMappings_UserProfiles_UserId",
+                        column: x => x.UserId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -442,14 +441,14 @@ namespace TheGram.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfileFollowerMappings_ProfileId",
+                name: "IX_ProfileFollowerMappings_FollowerId",
                 table: "ProfileFollowerMappings",
-                column: "ProfileId");
+                column: "FollowerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfileFollowerMappings_ProfileId1",
+                name: "IX_ProfileFollowerMappings_FollowingId",
                 table: "ProfileFollowerMappings",
-                column: "ProfileId1");
+                column: "FollowingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProfileFriendMappings_FriendId",
@@ -457,9 +456,9 @@ namespace TheGram.Migrations
                 column: "FriendId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfileFriendMappings_ProfileId",
+                name: "IX_ProfileFriendMappings_UserId",
                 table: "ProfileFriendMappings",
-                column: "ProfileId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reactions_CommentId",

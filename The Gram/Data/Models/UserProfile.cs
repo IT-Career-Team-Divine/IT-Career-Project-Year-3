@@ -14,7 +14,7 @@ namespace The_Gram.Data.Models
         {
             this.Posts = new List<Post>();
             this.Comments = new List<PostComment>();
-            this.Friends = new List<ProfileFriendMapping>();
+            this.FriendsTo = new List<ProfileFriendMapping>();
             this.Followers = new List<ProfileFollowerMapping>();
             this.Reactions = new List<PostReaction>();
             this.PostCommentReactions = new List<PostCommentReaction>();
@@ -34,7 +34,8 @@ namespace The_Gram.Data.Models
         public string Picture { get; set; } = defaultPhoto;
         public List<Post> Posts { get; set; }
         public List<PostComment> Comments { get; set; }
-        public List<ProfileFriendMapping> Friends { get; set; }
+        public List<ProfileFriendMapping> FriendsTo { get; set; }
+        public List<ProfileFriendMapping> FriendsFrom { get; set; }
         public List<ProfileFollowerMapping> Followers { get; set; }
         public List<ProfileFollowerMapping> Following { get; set; }
         public List<PostReaction> Reactions { get; set; }
