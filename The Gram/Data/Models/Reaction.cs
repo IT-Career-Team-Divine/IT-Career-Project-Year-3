@@ -10,5 +10,6 @@ namespace The_Gram.Data.Models
         public UserProfile User { get; set; }
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace The_Gram.Data.Models
         public string Id { get; init; } = Guid.NewGuid().ToString();
         public string UserId { get; set; }
         public int TotalLikes { get; set; }
+        public int TotalDislikes { get; set; }
         [Required]
         [MaxLength(MaxContentTextLength)]
         public string Text { get; set; }

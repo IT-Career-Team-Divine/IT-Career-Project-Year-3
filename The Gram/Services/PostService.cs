@@ -79,6 +79,7 @@ namespace The_Gram.Servicest
             Post post = await GetByIdAsync(id);
             List<Image> images = await GetPostImages(id);
             List<PostReaction> likes = await GetPostLikes(id);
+            List<PostReaction> dislikes = await GetPostDislikes(id);
             List<PostComment> postComments = await GetPostComments(id);
             var profile = await userService.GetProfileByIdAsync(post.UserId);
             PostViewModel model = new PostViewModel()
@@ -91,6 +92,7 @@ namespace The_Gram.Servicest
                 PostComments = postComments,
                 Likes = likes,
                 Author = profile.Username,
+                Dislikes= dislikes,
             };
             return model;
         }
@@ -128,17 +130,24 @@ namespace The_Gram.Servicest
 
         public async Task<bool> Like(Post post, UserProfile profile)
         {
-            var liked = await context.PostReactions.FirstOrDefaultAsync(pr => pr.UserId == profile.Id && pr.PostId == post.Id);
+            var liked = await context.PostReactions.FirstOrDefaultAsync(pr => pr.UserId == profile.Id && pr.PostId == post.Id && pr.Name == "Like");
             if (liked != null || post == null || profile == null)
             {
                 return false;
+            }
+            var disliked = await context.PostReactions.FirstOrDefaultAsync(pr => pr.UserId == profile.Id && pr.PostId == post.Id && pr.Name == "Dislike");
+            if (disliked != null)
+            {
+                context.PostReactions.Remove(disliked);
+                post.TotalDislikes--;
             }
 
             var reaction = new PostReaction()
             {
                 PostId = post.Id,
                 User = profile,
-                UserId = profile.Id
+                UserId = profile.Id,
+                Name = "Like"
             };
             post.TotalLikes++;
 
@@ -149,7 +158,7 @@ namespace The_Gram.Servicest
         }
         public async Task<List<PostReaction>> GetPostLikes(string postId)
         {
-            var likes = await context.PostReactions.Where(i => i.PostId == postId).ToListAsync();
+            var likes = await context.PostReactions.Where(pr => pr.PostId == postId && pr.Name == "Like").ToListAsync();
             return likes;
         }
 
@@ -276,6 +285,41 @@ namespace The_Gram.Servicest
             }
             return friendPosts;
 
+        }
+
+        public async Task<bool> Dislike(Post post, UserProfile profile)
+        {
+            var disliked = await context.PostReactions.FirstOrDefaultAsync(pr => pr.UserId == profile.Id && pr.PostId == post.Id && pr.Name == "Dislike");
+            if (disliked != null || post == null || profile == null)
+            {
+                return false;
+            }
+            var liked = await context.PostReactions.FirstOrDefaultAsync(pr => pr.UserId == profile.Id && pr.PostId == post.Id && pr.Name == "Like");
+            if (liked != null)
+            {
+                context.PostReactions.Remove(liked);
+                post.TotalLikes--;
+            }
+
+            var reaction = new PostReaction()
+            {
+                PostId = post.Id,
+                User = profile,
+                UserId = profile.Id,
+                Name = "Dislike"
+            };
+            post.TotalDislikes++;
+
+            post.Reactions.Add(reaction);
+            await context.PostReactions.AddAsync(reaction);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<List<PostReaction>> GetPostDislikes(string postId)
+        {
+            var likes = await context.PostReactions.Where(pr => pr.PostId == postId && pr.Name == "Dislike").ToListAsync();
+            return likes;
         }
     }
 }

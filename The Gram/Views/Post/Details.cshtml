@@ -29,6 +29,14 @@
 </div>
 <br />
 <div class="text-center mb-3">
+    Dislikes: @Model.Dislikes.Count()
+</div>
+<br />
+<div class="text-center mb-3">
+    <a class="btn btn-secondary" asp-controller="Post" asp-action="Dislike" asp-route-thisPostId="@Model.Id" asp-route-currentImageIndex="@Model.CurrentImageIndex">Dislike</a>
+</div>
+<br />
+<div class="text-center mb-3">
     <form asp-controller="Post" asp-action="AddComment" asp-route-thisPostId="@Model.Id" asp-route-currentImageIndex="@Model.CurrentImageIndex" asp-route-currentProfileId="@profile.Id" method="post">
         <input type="hidden" name="postId" value="@Model.PostId" />
         <input class="form-control" name="commentText" />

@@ -13,6 +13,7 @@ namespace The_Gram.Models.Post
         public string AuthorId { get; set; }
         public List<PostComment> PostComments { get; set; }
         public List<PostReaction> Likes { get; set; }
+        public List<PostReaction> Dislikes { get; set; }
         public int CurrentImageIndex { get; set; } = 0;
     }
 }

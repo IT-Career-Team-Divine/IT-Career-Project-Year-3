@@ -75,6 +75,7 @@ namespace The_Gram.Controllers
 
             var images = await postService.GetPostImages(thisPostId);
             var likes = await postService.GetPostLikes(thisPostId);
+            var dislikes = await postService.GetPostDislikes(thisPostId);
             var comments = await postService.getPostComments(thisPostId);
 
             if (currentImageIndex > 0)
@@ -89,7 +90,7 @@ namespace The_Gram.Controllers
 
             var imageUrl = images[prevIndex].URL;
 
-            return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, PostComments = post.Comments, Id = post.Id, CurrentImageIndex = prevIndex });
+            return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, Dislikes = dislikes, PostComments = comments, Id = post.Id, CurrentImageIndex = currentImageIndex });
         }
 
         [HttpGet]
@@ -105,6 +106,7 @@ namespace The_Gram.Controllers
 
             var images = await postService.GetPostImages(thisPostId);
             var likes = await postService.GetPostLikes(thisPostId);
+            var dislikes = await postService.GetPostDislikes(thisPostId);
             var comments = await postService.getPostComments(thisPostId);
 
             if (currentImageIndex != images.Count - 1)
@@ -114,7 +116,8 @@ namespace The_Gram.Controllers
 
             var imageUrl = images[nextIndex].URL;
 
-            return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, PostComments = post.Comments, Id = post.Id, CurrentImageIndex = nextIndex });
+
+            return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, Dislikes = dislikes, PostComments = comments, Id = post.Id, CurrentImageIndex = currentImageIndex });
         }
         [Authorize]
         [HttpGet]
@@ -127,12 +130,33 @@ namespace The_Gram.Controllers
 
             await postService.Like(post, user);
 
+            var dislikes = await postService.GetPostDislikes(thisPostId);
             var likes = await postService.GetPostLikes(thisPostId);
 
-            return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, PostComments = post.Comments, Id = post.Id, CurrentImageIndex = currentImageIndex });
+            return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, Dislikes = dislikes, PostComments = post.Comments, Id = post.Id, CurrentImageIndex = currentImageIndex });
 
 
         }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Dislike(string thisPostId, int currentImageIndex)
+        {
+            var post = await postService.GetByIdAsync(thisPostId);
+            var user = await userService.GetProfileByIdAsync(post.UserId);
+            var images = await postService.GetPostImages(thisPostId);
+            var comments = await postService.getPostComments(thisPostId);
+
+            await postService.Dislike(post, user);
+
+            var likes = await postService.GetPostLikes(thisPostId);
+            var dislikes = await postService.GetPostDislikes(thisPostId);
+
+            return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, Dislikes = dislikes, PostComments = post.Comments, Id = post.Id, CurrentImageIndex = currentImageIndex });
+
+
+        }
+
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddComment(string thisPostId, int currentImageIndex, string currentProfileId, string commentText)
@@ -141,11 +165,12 @@ namespace The_Gram.Controllers
             var user = await userService.GetProfileByIdAsync(currentProfileId);
             var images = await postService.GetPostImages(thisPostId);
             var likes = await postService.GetPostLikes(thisPostId);
+            var dislikes = await postService.GetPostDislikes(thisPostId);
 
             await postService.Comment(post, user, commentText);
             List<PostComment> comments = await postService.getPostComments(thisPostId);
 
-            return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, PostComments = comments, Id = post.Id, CurrentImageIndex = currentImageIndex });
+            return View("Details", new PostViewModel { PostCaption = post.Text, Images = images, Likes = likes, Dislikes = dislikes, PostComments = post.Comments, Id = post.Id, CurrentImageIndex = currentImageIndex });
 
 
         }
