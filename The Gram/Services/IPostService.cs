@@ -15,8 +15,10 @@ namespace The_Gram.Services
         public Task<bool> Dislike(Post post, UserProfile profile);
         public Task<List<PostReaction>> GetPostLikes(string postId);
         public Task<List<PostReaction>> GetPostDislikes(string postId);
+        public Task<List<AllPostsViewModel>> GetUserPosts(string id);
         public Task<List<PostComment>> getPostComments(string postId);
         public Task<bool> Comment(Post post, UserProfile user, string commentText);
         public  Task<List<AllPostsViewModel>> GetFeedAsync(string id);
+        Task Edit(string id, List<Image> images, string postCaption);
     }
 }

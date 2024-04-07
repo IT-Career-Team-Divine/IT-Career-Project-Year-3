@@ -12,8 +12,8 @@ using The_Gram.Data;
 namespace TheGram.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240319104210_DislikeMigration")]
-    partial class DislikeMigration
+    [Migration("20240319174732_InitalMigration")]
+    partial class InitalMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

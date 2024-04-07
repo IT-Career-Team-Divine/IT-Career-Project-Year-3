@@ -321,5 +321,10 @@ namespace The_Gram.Servicest
             var likes = await context.PostReactions.Where(pr => pr.PostId == postId && pr.Name == "Dislike").ToListAsync();
             return likes;
         }
+
+        public Task Edit(string id, List<Image> images, string postCaption)
+        {
+            return null;
+        }
     }
 }

@@ -84,6 +84,29 @@
                 <a asp-area="" asp-controller="User" asp-route-id="@profile.Id" asp-route-modelId ="@Model.Id" asp-action="Defriend" class="btn btn-outline-secondary" role="button">Defriend</a>
             </div>
         }
+        @foreach(var post in Model.UserPosts){
+            <div class="card col-4" style="width: 20rem; ">
+                <div class="card-body">
+                    <h4 class="card-title mt-1">@post.Description</h4>
+                    <div>
+                        <img src="@post.Images[0].URL" height="60" />
+
+                    </div>
+                </div>
+
+                <a asp-controller="Post" asp-action="Details" asp-route-id="@post.Id" class="btn btn-outline-primary">Details</a>
+                @if (profile.Username == post.Author)
+                {
+                    <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.Id" asp-route-currentProfileId="@profile.Id" class="btn btn-outline-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+                }
+                @if (profile.Username == post.Author || profile.IsAdmin == true)
+                {
+                    <a asp-controller="Post" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-outline-danger mb-2 w-100 p-3 fw-bold">Delete</a>
+
+                }
+            </div>
+
+        }
         
 
     }

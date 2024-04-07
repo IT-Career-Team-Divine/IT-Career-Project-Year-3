@@ -185,41 +185,16 @@ namespace The_Gram.Controllers
             var currentUser = await userManager.GetUserAsync(HttpContext.User);
             var userIsAdmin = await adminService.IsAdminAsync(user, profile);
 
-            if (currentUser.Id != profile.UserId && !userIsAdmin)
+            if (currentUser.Id != post.UserId && !userIsAdmin)
             {
                 return RedirectToAction("Become", "Admin");
             }
-            var images =  await postService.GetPostImages(id);
-            var postCreationView = new PostViewModel()
+            var postCreationView = new PostCreationViewModel()
             {
                 Id = id,
-                PostCaption =post.Text,
+                Description = post.Text,
             };
             return View(postCreationView);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Edit(string id, UserAccountViewModel model)
-        {
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-
-            var edited = await this.userService.Edit(
-                id,
-                model.FullName,
-                model.PictureUr,
-                model.Bio,
-                model.Username);
-            if (!edited)
-            {
-                return BadRequest();
-            }
-            return Redirect($"~/User/Account/{id}");
         }
     }
 }

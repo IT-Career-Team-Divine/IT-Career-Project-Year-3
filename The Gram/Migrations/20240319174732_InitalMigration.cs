@@ -122,6 +122,7 @@ namespace TheGram.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TotalLikes = table.Column<int>(type: "int", nullable: false),
+                    TotalDislikes = table.Column<int>(type: "int", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(2200)", maxLength: 2200, nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -330,6 +331,7 @@ namespace TheGram.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CommentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PostId = table.Column<string>(type: "nvarchar(450)", nullable: true)

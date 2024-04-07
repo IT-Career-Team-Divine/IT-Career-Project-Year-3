@@ -5,6 +5,7 @@ using The_Gram.Data.Models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using The_Gram.Models.User;
+using The_Gram.Servicest;
 
 namespace The_Gram.Services
 {
@@ -153,7 +154,17 @@ namespace The_Gram.Services
             {
                 return false;
             }
-
+            var posts = await context.Posts.Where(p => p.UserId == profile.Id).ToListAsync() ;
+            foreach (var post in posts)
+            {
+                var comments = await context.PostComments.Where(pc => pc.PostId == post.Id).ToListAsync();
+                var reactions = await context.PostReactions.Where(pc => pc.PostId == post.Id).ToListAsync();
+                var images = await context.Images.Where( i => i.ContentId == post.Id).ToListAsync();
+            }
+            var userComments = await context.PostComments.Select(pc => pc.CommenterId == profile.Id).ToListAsync();
+            var userReactions = await context.PostReactions.Select(pr => pr.UserId == profile.Id).ToListAsync();
+            var userCommentReactions = await context.PostCommentReactions.Select(pcr => pcr.User.Id == profile.Id).ToListAsync();
+            context.RemoveRange(userCommentReactions, userComments, userReactions);
             var result = context.UserProfiles.Remove(profile);
             if (result != null)
             {
