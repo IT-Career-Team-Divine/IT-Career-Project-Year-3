@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("The Gram")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ef1f02ffb2b516720806d60e0e0e3c64fdcc07b")]
 [assembly: System.Reflection.AssemblyProductAttribute("The Gram")]
 [assembly: System.Reflection.AssemblyTitleAttribute("The Gram")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,22 +1,73 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
 
 body {
-  margin-bottom: 60px;
+    margin: 0;
+    padding: 0;
+    font-family: "Georgia", serif;
+    background-color: #CAA4FF;
 }
+
+header {
+    margin: 0;
+    padding: 0;
+    background-color: #9f5dfb;
+}
+
+.login-container {
+    background-color: #F5F3FE;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+
+.input-container {
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #F5F3FE;
+    color: #212529;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn:hover {
+        background-color: #9f5dfb !important;
+        color: #F5F3FE !important;
+    }
+
+
+.navbar > .container-fluid {
+    display: flex;
+    flex-wrap: inherit;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #9f5dfb;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.image-container {
+    margin-right: 20px;
+}
+
+    .image-container img {
+        max-width: 100%;
+    }
+
